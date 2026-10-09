@@ -1,0 +1,239 @@
+/* ---------- Mise en page : menu à gauche + contenu à droite ---------- */
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.colonne-droite {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Menu vertical ---------- */
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 240px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 32px 16px;
+  background: var(--fond-carte);
+  border-right: 1px solid var(--bordure);
+}
+
+.profil {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 8px;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.onglet {
+  position: relative;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--texte-doux);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+/* Petite barre de couleur qui apparaît à gauche de l'onglet */
+.onglet::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 4px;
+  height: 0;
+  border-radius: 4px;
+  background: var(--accent);
+  transform: translateY(-50%);
+  transition: height 0.2s;
+}
+
+/* Effet au survol : fond, couleur, léger décalage à droite et barre qui grandit */
+.onglet:hover {
+  background: var(--fond);
+  color: var(--texte);
+  transform: translateX(6px);
+}
+
+.onglet:hover::before {
+  height: 60%;
+}
+
+.onglet.actif {
+  background: var(--accent);
+  color: white;
+}
+
+.onglet.actif::before {
+  height: 0;
+}
+
+/* Sur téléphone, le menu repasse en haut, à l'horizontale */
+@media (max-width: 700px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: static;
+    height: auto;
+    width: 100%;
+    gap: 16px;
+    padding: 16px;
+    border-right: none;
+    border-bottom: 1px solid var(--bordure);
+  }
+
+  .nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .onglet:hover {
+    transform: none;
+  }
+}
+
+/* ---------- Contenu ---------- */
+.contenu {
+  flex: 1;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 40px;
+}
+
+.photo {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--accent);
+}
+
+.sous-titre {
+  font-size: 1.15rem;
+  color: var(--texte-doux);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.btn {
+  padding: 10px 18px;
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+  background: var(--accent);
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
+
+.btn-secondaire {
+  background: transparent;
+  color: var(--accent);
+}
+
+/* ---------- Cartes, listes ---------- */
+.carte {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+  border: 1px solid var(--bordure);
+  border-radius: 12px;
+  background: var(--fond-carte);
+}
+
+.timeline,
+.liens {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.periode {
+  font-size: 0.9rem;
+  color: var(--texte-doux);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--fond-carte);
+  border: 1px solid var(--bordure);
+}
+
+.grille {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.barre {
+  height: 10px;
+  border-radius: 999px;
+  background: var(--bordure);
+  overflow: hidden;
+}
+
+.barre-remplie {
+  height: 100%;
+  background: var(--accent);
+}
+
+.footer {
+  padding: 24px;
+  text-align: center;
+  color: var(--texte-doux);
+  border-top: 1px solid var(--bordure);
+}

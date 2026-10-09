@@ -1,0 +1,39 @@
+/* Couleurs globales (variables CSS), réutilisées dans App.css */
+:root {
+  --fond: #ffffff;
+  --fond-carte: #f4f5f7;
+  --texte: #1c1e21;
+  --texte-doux: #5f6670;
+  --bordure: #e2e4e8;
+  --accent: #4f46e5;
+
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  color: var(--texte);
+  background: var(--fond);
+}
+
+/* Mode sombre automatique selon le réglage du système */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fond: #16181d;
+    --fond-carte: #1f2229;
+    --texte: #e8eaed;
+    --texte-doux: #9aa0a6;
+    --bordure: #2e323a;
+    --accent: #818cf8;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--fond);
+}
+
+a {
+  color: var(--accent);
+}
