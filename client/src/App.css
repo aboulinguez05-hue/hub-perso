@@ -16,50 +16,55 @@
   position: sticky;
   top: 0;
   height: 100vh;
-  width: 240px;
+  width: 100px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  gap: 32px;
-  padding: 32px 16px;
+  gap: 24px;
+  padding: 24px 8px;
   background: var(--fond-carte);
   border-right: 1px solid var(--bordure);
 }
 
+/* Photo au-dessus du nom, centrés */
 .profil {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
-  padding: 0 8px;
+  gap: 6px;
+  text-align: center;
 }
 
 .avatar {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
 }
 
 .logo {
   font-weight: 700;
-  font-size: 1.2rem;
+  font-size: 0.8rem;
+  line-height: 1.2;
 }
 
 .nav {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .onglet {
   position: relative;
-  padding: 12px 16px;
+  padding: 8px 6px;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   background: transparent;
   color: var(--texte-doux);
   font: inherit;
-  text-align: left;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  text-align: center;
   cursor: pointer;
   transition: background 0.2s, color 0.2s, transform 0.2s;
 }
@@ -82,7 +87,7 @@
 .onglet:hover {
   background: var(--fond);
   color: var(--texte);
-  transform: translateX(6px);
+  transform: translateX(3px);
 }
 
 .onglet:hover::before {
@@ -114,9 +119,22 @@
     border-bottom: 1px solid var(--bordure);
   }
 
+  .profil {
+    flex-direction: row;
+  }
+
+  .logo {
+    font-size: 1rem;
+  }
+
   .nav {
     flex-direction: row;
     flex-wrap: wrap;
+  }
+
+  .onglet {
+    font-size: 0.9rem;
+    padding: 8px 12px;
   }
 
   .onglet:hover {
@@ -215,7 +233,7 @@
 
 .grille {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(360px, 100%), 1fr));
   gap: 16px;
 }
 
@@ -236,4 +254,294 @@
   text-align: center;
   color: var(--texte-doux);
   border-top: 1px solid var(--bordure);
+}
+
+/* ---------- Carte d'un projet d'épargne : image à gauche, texte à droite ---------- */
+.carte-projet {
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+
+.image-projet {
+  width: 140px;
+  height: 90px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.infos-projet {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ---------- Formulaire d'ajout d'argent ---------- */
+.formulaire {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.formulaire label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1 1 140px;
+  font-size: 0.9rem;
+  color: var(--texte-doux);
+}
+
+.formulaire .champ-large {
+  flex: 2 1 220px;
+}
+
+.formulaire input,
+.formulaire select {
+  padding: 8px 10px;
+  border: 1px solid var(--bordure);
+  border-radius: 8px;
+  background: var(--fond);
+  color: var(--texte);
+  font: inherit;
+}
+
+.formulaire input:focus,
+.formulaire select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* ---------- Historique des ajouts ---------- */
+.historique {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ligne-historique {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+}
+
+.ligne-historique .note {
+  flex: 1;
+  color: var(--texte-doux);
+}
+
+.ligne-historique .montant {
+  font-weight: 700;
+  color: #16a34a;
+}
+
+.btn-supprimer {
+  border: none;
+  background: transparent;
+  color: var(--texte-doux);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.btn-supprimer:hover {
+  background: var(--fond);
+  color: #dc2626;
+}
+
+/* ---------- Gestion de salaire ---------- */
+.budget {
+  gap: 4px;
+  max-width: 560px;
+}
+
+.budget h3 {
+  margin: 16px 0 4px;
+}
+
+.ligne-budget {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0;
+}
+
+.ligne-salaire {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* Aligne le champ du salaire sur ceux des dépenses (qui ont un bouton ✕ en plus) */
+.ligne-salaire .champ-euros {
+  margin-right: 35px;
+}
+
+.champ-euros {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.champ-euros input,
+.ajout-depense input {
+  padding: 6px 10px;
+  border: 1px solid var(--bordure);
+  border-radius: 8px;
+  background: var(--fond);
+  color: var(--texte);
+  font: inherit;
+}
+
+.champ-euros input {
+  width: 110px;
+  text-align: right;
+}
+
+.champ-euros input:focus,
+.ajout-depense input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.ajout-depense {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.ajout-depense input {
+  flex: 1;
+  min-width: 0;
+}
+
+.ajout-depense .btn {
+  padding: 6px 14px;
+}
+
+.totaux {
+  margin: 16px 0 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--bordure);
+}
+
+.reste-positif {
+  color: #16a34a;
+}
+
+.reste-negatif {
+  color: #dc2626;
+}
+
+.barre-depassee {
+  background: #dc2626;
+}
+
+/* ---------- Gestion de salaire : navigation entre les mois ---------- */
+.nav-mois {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 560px;
+  margin-bottom: 8px;
+}
+
+.nav-mois .btn {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+}
+
+.mois-affiche {
+  font-size: 1.15rem;
+}
+
+.lien-bouton {
+  display: inline-block;
+  margin: 0 0 12px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.budget .lien-danger {
+  align-self: flex-start;
+  margin: 12px 0 0;
+  color: var(--texte-doux);
+}
+
+.budget .lien-danger:hover {
+  color: #dc2626;
+}
+
+.budget-vide {
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.budget-vide p {
+  margin: 0;
+}
+
+/* ---------- Tableau récapitulatif des mois ---------- */
+.tableau-conteneur {
+  overflow-x: auto;
+  padding: 0;
+}
+
+.tableau {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.tableau th,
+.tableau td {
+  padding: 10px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--bordure);
+  white-space: nowrap;
+}
+
+.tableau th {
+  color: var(--texte-doux);
+  font-weight: 500;
+}
+
+.tableau tbody tr {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.tableau tbody tr:hover {
+  background: var(--fond);
+}
+
+.tableau tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.tableau .ligne-active {
+  box-shadow: inset 4px 0 0 var(--accent);
+  font-weight: 600;
+}
+
+.tableau .nombre {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }

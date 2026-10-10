@@ -16,7 +16,7 @@ function Accueil({ onChange }) {
           <button type="button" className="btn" onClick={() => onChange('apropos')}>
             Découvrir mon parcours
           </button>
-          <button type="button" className="btn btn-secondaire" onClick={() => onChange('economie')}>
+          <button type="button" className="btn btn-secondaire" onClick={() => onChange('projets')}>
             Mes projets d'épargne
           </button>
         </div>

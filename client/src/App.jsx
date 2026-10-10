@@ -2,7 +2,8 @@ import { useState } from 'react'
 import Header from './components/Header.jsx'
 import Accueil from './pages/Accueil.jsx'
 import APropos from './pages/APropos.jsx'
-import Economie from './pages/Economie.jsx'
+import Projets from './pages/Projets.jsx'
+import Salaire from './pages/Salaire.jsx'
 import Contact from './pages/Contact.jsx'
 import './App.css'
 
@@ -10,7 +11,8 @@ import './App.css'
 const ONGLETS = [
   { id: 'accueil', label: 'Accueil' },
   { id: 'apropos', label: 'À propos de moi' },
-  { id: 'economie', label: 'Économie' },
+  { id: 'projets', label: 'Projets' },
+  { id: 'salaire', label: 'Gestion de salaire' },
   { id: 'contact', label: 'Contact' },
 ]
 
@@ -26,8 +28,11 @@ function App() {
         <main className="contenu">
           {ongletActif === 'accueil' && <Accueil onChange={setOngletActif} />}
           {ongletActif === 'apropos' && <APropos />}
-          {ongletActif === 'economie' && <Economie />}
+          {ongletActif === 'projets' && <Projets />}
+          {ongletActif === 'salaire' && <Salaire />}
           {ongletActif === 'contact' && <Contact />}
+          {ongletActif === 'Fin' && <Fin />}
+
         </main>
 
         <footer className="footer">© {new Date().getFullYear()} Antoine Boulinguez</footer>
