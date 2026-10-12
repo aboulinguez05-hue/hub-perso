@@ -221,7 +221,7 @@ function Projets() {
 
   return (
     <section>
-      {/* Connexion Google discrète, en haut à gauche */}
+      {/* Connexion Google discrète, dans le coin en haut à droite de la page */}
       <BandeauCompte />
 
       <h2 className="titre-centre">Projets</h2>

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useCompte } from '../compte.jsx'
 import { firebaseActif } from '../firebase.js'
 
-// Petit lien discret en haut à gauche de Projets et Gestion de salaire : connexion Google
+// Petit lien discret en haut à droite de Projets et Gestion de salaire : connexion Google
 // pour retrouver ses données sur tous ses appareils, ou rappel du compte connecté
 function BandeauCompte() {
   const { utilisateur, connexion, deconnexion } = useCompte()
