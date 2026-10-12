@@ -13,7 +13,7 @@ const EXPERIENCES = [
     detail: 'Assistance sur divers soins.',
   },
   {
-+    periode: 'Février 2023',
+    periode: 'Février 2023',
     titre: 'Stage chez Trace Software',
     lieu: 'Saint-Romain-de-Colbosc (76)',
     detail: 'Initiation au code HTML, CSS et JavaScript, découverte des métiers de développeur, du marketing et de la communication.',
