@@ -462,6 +462,107 @@
   }
 }
 
+/* ---------- Contact : coordonnées, réseaux cliquables et formulaire ---------- */
+
+/* E-mail et téléphone : texte simple centré, non cliquable */
+.coordonnees {
+  list-style: none;
+  margin: 0 0 40px;
+  padding: 0;
+  text-align: center;
+}
+
+.grille-contacts {
+  list-style: none;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 12px;
+}
+
+/* Flèche ↗ : indique un lien externe, devient violette au survol */
+.fleche {
+  color: var(--texte-doux);
+  transition: color 0.2s;
+}
+
+.carte-contact:hover .fleche {
+  color: var(--accent);
+}
+
+.grille-contacts li {
+  display: flex;
+  animation: fondu 0.3s ease-out both;
+  animation-delay: calc(var(--rang) * 60ms);
+}
+
+/* Toute la carte est le lien ; ombre légère au survol, comme les passions */
+.carte-contact {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border: 1px solid var(--bordure);
+  border-radius: 12px;
+  background: var(--fond-carte);
+  color: var(--texte);
+  text-decoration: none;
+  transition: box-shadow 0.2s;
+}
+
+.carte-contact:hover {
+  box-shadow: 0 6px 18px rgba(30, 35, 60, 0.12);
+}
+
+.carte-contact .detail {
+  font-size: 0.88rem;
+  overflow-wrap: anywhere;
+}
+
+.formulaire-contact {
+  max-width: 560px;
+  margin: 0 auto;
+  gap: 14px;
+}
+
+.formulaire-contact label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.9rem;
+  color: var(--texte-doux);
+}
+
+.formulaire-contact input,
+.formulaire-contact textarea {
+  padding: 8px 10px;
+  border: 1px solid var(--bordure);
+  border-radius: 8px;
+  background: var(--fond);
+  color: var(--texte);
+  font: inherit;
+  resize: vertical;
+}
+
+.formulaire-contact input:focus,
+.formulaire-contact textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.formulaire-contact .btn {
+  align-self: flex-end;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grille-contacts li {
+    animation: none;
+  }
+}
+
 /* ---------- Titres centrés (page « Mon parcours ») ---------- */
 .titre-centre {
   text-align: center;
