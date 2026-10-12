@@ -1,0 +1,10 @@
+# Configuration de la mise en ligne sur Netlify
+# Le site (React + Vite) est dans le dossier client ; Netlify y lance "npm run build"
+# et publie le dossier dist généré.
+[build]
+  base = "client"
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"

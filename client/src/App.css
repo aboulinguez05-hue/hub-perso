@@ -1,0 +1,1100 @@
+/* ---------- Mise en page : menu à gauche + contenu à droite ---------- */
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.colonne-droite {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Menu vertical : un panneau flottant en deux parties ---------- */
+.sidebar {
+  position: sticky;
+  top: 12px;
+  z-index: 10;
+  align-self: flex-start;
+  width: 116px;
+  margin: 12px 0 12px 12px;
+  flex-shrink: 0;
+}
+
+/* Le panneau de verre qui contient la photo et les deux parties */
+.panneau {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 18px 8px;
+  border-radius: 22px;
+}
+
+/* Une partie du menu : son titre puis ses onglets */
+.groupe {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Titre de la partie (Informations, Fonctionnalités) */
+.titre-groupe {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--texte-doux);
+}
+
+/* ---------- Effet « liquid glass » ----------
+   Le flou (backdrop-filter) floute et sature ce qui passe derrière le menu,
+   les ombres intérieures dessinent l'épaisseur du verre, et un reflet lumineux
+   glisse quand on fait défiler la page (variable --defilement, réglée dans Header.jsx). */
+.verre {
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--verre);
+  border: 1px solid var(--verre-bord);
+  -webkit-backdrop-filter: blur(16px) saturate(170%);
+  backdrop-filter: blur(16px) saturate(170%);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.9),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.35),
+    inset 1px 0 0 rgba(255, 255, 255, 0.5),
+    0 8px 30px var(--verre-ombre);
+  transition: background 0.35s, box-shadow 0.35s, backdrop-filter 0.35s;
+}
+
+/* Reflet : une bande de lumière diagonale qui suit le défilement */
+.verre::before {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 38%,
+    rgba(255, 255, 255, 0.55) 48%,
+    rgba(255, 255, 255, 0.12) 54%,
+    transparent 62%
+  );
+  transform: translateY(calc(var(--defilement, 0) * 60% - 30%));
+  transition: transform 0.15s linear;
+}
+
+/* Liseré lumineux sur le bord du verre */
+.verre::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: inherit;
+  background: radial-gradient(120% 60% at 30% 0%, rgba(255, 255, 255, 0.5), transparent 55%);
+}
+
+/* Pendant le défilement, le verre devient plus transparent et plus profond */
+.verre.defile {
+  background: rgba(255, 255, 255, 0.78);
+  -webkit-backdrop-filter: blur(22px) saturate(200%);
+  backdrop-filter: blur(22px) saturate(200%);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.95),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.4),
+    inset 1px 0 0 rgba(255, 255, 255, 0.6),
+    0 14px 40px rgba(30, 35, 90, 0.18);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .verre,
+  .verre::before {
+    transition: none;
+  }
+}
+
+/* Photo au-dessus du nom, centrés */
+.profil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 0.8rem;
+  line-height: 1.2;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.onglet {
+  position: relative;
+  padding: 8px 6px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--texte-doux);
+  font: inherit;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+/* Petite barre de couleur qui apparaît à gauche de l'onglet */
+.onglet::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 4px;
+  height: 0;
+  border-radius: 4px;
+  background: #b8bdc6;
+  transform: translateY(-50%);
+  transition: height 0.2s;
+}
+
+/* Effet au survol : fond gris clair, couleur, léger décalage à droite et barre grise qui grandit */
+.onglet:hover {
+  background: #eceef2;
+  color: var(--texte);
+  transform: translateX(3px);
+}
+
+.onglet:hover::before {
+  height: 60%;
+}
+
+/* Onglet actif : gris clair un peu plus marqué que le survol, texte en gras et barre grise visible */
+.onglet.actif {
+  background: #e3e6eb;
+  color: var(--texte);
+  font-weight: 600;
+}
+
+.onglet.actif::before {
+  height: 60%;
+  background: #8f96a3;
+}
+
+/* Sur téléphone, le menu repasse en haut, à l'horizontale */
+@media (max-width: 700px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  /* Le panneau passe en haut de la page, sur toute la largeur */
+  .sidebar {
+    position: static;
+    align-self: stretch;
+    width: auto;
+    margin: 8px 8px 0;
+  }
+
+  .panneau {
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 20px;
+  }
+
+  .titre-groupe {
+    text-align: left;
+  }
+
+  .profil {
+    flex-direction: row;
+  }
+
+  .logo {
+    font-size: 1rem;
+  }
+
+  .nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .onglet {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
+
+  .onglet:hover {
+    transform: none;
+  }
+}
+
+/* ---------- Contenu ---------- */
+.contenu {
+  flex: 1;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  /* Colonne flexible : une page peut occuper toute la hauteur disponible (ex. Contact) */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Fondu rapide à chaque changement d'onglet */
+@keyframes fondu {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.apparition {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  animation: fondu 0.3s ease-out;
+}
+
+/* Si l'utilisateur a demandé à réduire les animations dans son système, on les coupe */
+@media (prefers-reduced-motion: reduce) {
+  .apparition {
+    animation: none;
+  }
+}
+
+/* Boutons en violet clair (même violet que les cartes Contact), un peu plus foncé au survol */
+.btn {
+  padding: 10px 18px;
+  border: 2px solid var(--violet-clair);
+  border-radius: 8px;
+  background: var(--violet-clair);
+  color: white;
+  font: inherit;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.btn:hover {
+  border-color: var(--violet-clair-survol);
+  background: var(--violet-clair-survol);
+}
+
+/* Bouton secondaire : contour violet clair ; le texte garde le violet du site pour rester lisible */
+.btn-secondaire {
+  background: transparent;
+  color: var(--accent);
+}
+
+.btn-secondaire:hover {
+  background: rgba(129, 140, 248, 0.12);
+}
+
+/* ---------- Cartes, listes ---------- */
+.carte {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+  border: 1px solid var(--bordure);
+  border-radius: 12px;
+  background: var(--fond-carte);
+}
+
+.liens {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.periode {
+  font-size: 0.9rem;
+  color: var(--texte-doux);
+}
+
+.detail {
+  font-size: 0.95rem;
+  color: var(--texte-doux);
+  line-height: 1.5;
+}
+
+/* ---------- Frise de la page « Mon parcours » ---------- */
+.frise {
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Chaque étape laisse de la place à gauche pour le point et le trait */
+.etape {
+  position: relative;
+  padding-left: 26px;
+  /* Les étapes apparaissent l'une après l'autre : 60 ms d'écart entre chacune */
+  animation: fondu 0.3s ease-out both;
+  animation-delay: calc(var(--rang) * 60ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .etape {
+    animation: none;
+  }
+}
+
+/* Le point violet, centré sur la première ligne du bloc */
+.etape::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 13px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--fond);
+  z-index: 1;
+}
+
+/* Le trait gris qui relie ce point au point suivant (pas après la dernière étape) */
+.etape:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 18px;
+  bottom: -26px;
+  width: 2px;
+  background: #c9cdd4;
+}
+
+/* Petit bloc blanc compact ; une ombre légère apparaît au survol */
+.bloc-etape {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 12px;
+  border: 1px solid var(--bordure);
+  border-radius: 10px;
+  background: var(--fond-carte);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  transition: box-shadow 0.2s;
+}
+
+.bloc-etape:hover {
+  box-shadow: 0 6px 18px rgba(30, 35, 60, 0.12);
+}
+
+/* Première ligne : période — titre */
+.ligne-etape {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 6px;
+}
+
+.ligne-etape .periode {
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.tiret {
+  color: var(--texte-doux);
+}
+
+.lieu {
+  font-size: 0.8rem;
+  color: var(--texte-doux);
+}
+
+.bloc-etape .detail {
+  font-size: 0.82rem;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ---------- Accueil : « Qui suis-je ? » et « Mes passions » ---------- */
+/* Espace entre deux sections (pas au-dessus de la première) */
+.section-accueil + .section-accueil {
+  margin-top: 48px;
+}
+
+/* Grille de cartes : autant de colonnes que la largeur le permet */
+.grille-passions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 12px;
+}
+
+/* Petite carte blanche ; ombre légère au survol, comme les blocs de la frise */
+.carte-passion {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border: 1px solid var(--bordure);
+  border-radius: 12px;
+  background: var(--fond-carte);
+  transition: box-shadow 0.2s;
+  animation: fondu 0.3s ease-out both;
+  animation-delay: calc(var(--rang) * 60ms);
+}
+
+.carte-passion:hover {
+  box-shadow: 0 6px 18px rgba(30, 35, 60, 0.12);
+}
+
+.carte-passion .detail {
+  font-size: 0.88rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carte-passion {
+    animation: none;
+  }
+}
+
+/* ---------- Contact : réseaux cliquables et coordonnées ---------- */
+
+/* La page remplit toute la hauteur et répartit ses 3 parties avec des espaces égaux */
+.page-contact {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+/* E-mail et téléphone : texte simple centré, non cliquable, un peu plus grand */
+.coordonnees {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 1.9;
+}
+
+.grille-contacts {
+  list-style: none;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.grille-contacts li {
+  display: flex;
+  animation: fondu 0.3s ease-out both;
+  animation-delay: calc(var(--rang) * 60ms);
+}
+
+/* Toute la carte est le lien : fond violet clair, texte blanc ;
+   au survol le violet fonce un peu et une ombre légère apparaît */
+.carte-contact {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px 22px;
+  border-radius: 14px;
+  background: var(--violet-clair);
+  color: white;
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.carte-contact:hover {
+  background: var(--violet-clair-survol);
+  box-shadow: 0 8px 22px rgba(99, 102, 241, 0.3);
+}
+
+.carte-contact .detail {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
+  overflow-wrap: anywhere;
+}
+
+/* Flèche ↗ : indique un lien externe, se décale un peu au survol */
+.fleche {
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.8);
+  transition: transform 0.2s;
+}
+
+.carte-contact:hover .fleche {
+  transform: translate(2px, -2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grille-contacts li {
+    animation: none;
+  }
+}
+
+/* ---------- Titres centrés (page « Mon parcours ») ---------- */
+.titre-centre {
+  text-align: center;
+}
+
+/* Petit trait violet centré sous le titre */
+.titre-centre::after {
+  content: '';
+  display: block;
+  width: 36px;
+  height: 3px;
+  margin: 6px auto 0;
+  border-radius: 3px;
+  background: var(--accent);
+}
+
+.intro-centree {
+  text-align: center;
+}
+
+/* Les compétences sous un titre centré sont centrées aussi */
+.titre-centre + .tags {
+  justify-content: center;
+}
+
+.tag {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--fond-carte);
+  border: 1px solid var(--bordure);
+}
+
+.grille {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(360px, 100%), 1fr));
+  gap: 16px;
+}
+
+.barre {
+  height: 10px;
+  border-radius: 999px;
+  background: var(--bordure);
+  overflow: hidden;
+}
+
+.barre-remplie {
+  height: 100%;
+  background: var(--accent);
+}
+
+.footer {
+  padding: 24px;
+  text-align: center;
+  color: var(--texte-doux);
+  border-top: 1px solid var(--bordure);
+}
+
+/* ---------- Carte d'un projet d'épargne ---------- */
+/* Ombre légère au survol et apparition en cascade, comme les autres cartes du site */
+.carte-projet {
+  gap: 10px;
+  transition: box-shadow 0.2s;
+  animation: fondu 0.3s ease-out both;
+  animation-delay: calc(var(--rang) * 60ms);
+}
+
+.carte-projet:hover {
+  box-shadow: 0 6px 18px rgba(30, 35, 60, 0.12);
+}
+
+/* Haut de la carte : image à gauche, texte à droite */
+.haut-projet {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.image-projet {
+  width: 140px;
+  height: 90px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Ancien projet sans image : cadre en pointillés qui invite à en ajouter une */
+.image-manquante {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: 2px dashed var(--bordure);
+  color: var(--texte-doux);
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.infos-projet {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Boutons sous la carte : « Voir les ajouts » à gauche, Modifier / Supprimer à droite */
+.actions-projet {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.actions-projet .lien-bouton {
+  margin: 0;
+}
+
+.actions-projet .espace {
+  flex: 1;
+}
+
+.actions-projet .lien-danger {
+  color: var(--texte-doux);
+}
+
+.actions-projet .lien-danger:hover {
+  color: #dc2626;
+}
+
+/* Aucun projet : message centré et bouton de création */
+.projets-vide {
+  align-items: center;
+  gap: 12px;
+  padding: 32px 16px;
+  text-align: center;
+}
+
+.btn-nouveau-projet {
+  display: block;
+  margin: 0 auto 20px;
+}
+
+/* Formulaire de création / modification d'un projet */
+.formulaire-projet {
+  margin-bottom: 20px;
+}
+
+/* Même fondu que le changement d'onglet quand on ouvre ou ferme le formulaire de projet */
+.formulaire-projet,
+.projets-vide,
+.btn-nouveau-projet {
+  animation: fondu 0.3s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .formulaire-projet,
+  .projets-vide,
+  .btn-nouveau-projet {
+    animation: none;
+  }
+}
+
+/* Élément qui prend toute la largeur du formulaire */
+.formulaire .champ-plein {
+  flex-basis: 100%;
+}
+
+/* Même présentation que les autres champs du formulaire (texte gris au-dessus) */
+.champ-image {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.9rem;
+  color: var(--texte-doux);
+}
+
+.choix-image {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Petit bouton carré violet clair avec l'icône d'envoi de fichier
+   (.formulaire devant pour passer avant le style des autres labels du formulaire) */
+.formulaire .btn-image {
+  position: relative;
+  flex: none;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--violet-clair);
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-image:hover {
+  background: var(--violet-clair-survol);
+}
+
+/* Contour visible quand on y arrive au clavier (Tab) */
+.btn-image:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Le champ fichier natif est caché mais reste utilisable (clic sur le bouton, clavier) */
+.btn-image input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.apercu-image {
+  width: 80px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.boutons-formulaire {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.message-erreur {
+  margin: 0 0 12px;
+  color: #dc2626;
+  font-size: 0.9rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carte-projet {
+    animation: none;
+  }
+}
+
+/* ---------- Formulaire d'ajout d'argent ---------- */
+.formulaire {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.formulaire label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1 1 140px;
+  font-size: 0.9rem;
+  color: var(--texte-doux);
+}
+
+.formulaire .champ-large {
+  flex: 2 1 220px;
+}
+
+.formulaire input,
+.formulaire select {
+  padding: 8px 10px;
+  border: 1px solid var(--bordure);
+  border-radius: 8px;
+  background: var(--fond);
+  color: var(--texte);
+  font: inherit;
+}
+
+.formulaire input:focus,
+.formulaire select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* ---------- Historique des ajouts (dans la carte du projet) ---------- */
+.historique {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Lignes fines séparées par un trait */
+.ligne-historique {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 0;
+  border-top: 1px solid var(--bordure);
+  font-size: 0.9rem;
+}
+
+.ligne-historique .note {
+  flex: 1;
+  color: var(--texte-doux);
+}
+
+.ligne-historique .montant {
+  font-weight: 700;
+  color: #16a34a;
+}
+
+.btn-supprimer {
+  border: none;
+  background: transparent;
+  color: var(--texte-doux);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.btn-supprimer:hover {
+  background: var(--fond);
+  color: #dc2626;
+}
+
+/* ---------- Gestion de salaire ---------- */
+/* Carte du mois centrée ; fondu à chaque changement de mois et ombre légère au survol,
+   comme les autres cartes du site */
+.budget {
+  gap: 4px;
+  max-width: 560px;
+  margin: 0 auto;
+  transition: box-shadow 0.2s;
+  animation: fondu 0.3s ease-out;
+}
+
+.budget:hover,
+.tableau-conteneur:hover {
+  box-shadow: 0 6px 18px rgba(30, 35, 60, 0.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .budget {
+    animation: none;
+  }
+}
+
+.budget h3 {
+  margin: 16px 0 4px;
+}
+
+.ligne-budget {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0;
+}
+
+.ligne-salaire {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* Aligne le champ du salaire sur ceux des dépenses (qui ont un bouton ✕ en plus) */
+.ligne-salaire .champ-euros {
+  margin-right: 35px;
+}
+
+.champ-euros {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.champ-euros input,
+.ajout-depense input {
+  padding: 6px 10px;
+  border: 1px solid var(--bordure);
+  border-radius: 8px;
+  background: var(--fond);
+  color: var(--texte);
+  font: inherit;
+}
+
+.champ-euros input {
+  width: 110px;
+  text-align: right;
+}
+
+.champ-euros input:focus,
+.ajout-depense input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.ajout-depense {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.ajout-depense input {
+  flex: 1;
+  min-width: 0;
+}
+
+.ajout-depense .btn {
+  padding: 6px 14px;
+}
+
+.totaux {
+  margin: 16px 0 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--bordure);
+}
+
+.reste-positif {
+  color: #16a34a;
+}
+
+.reste-negatif {
+  color: #dc2626;
+}
+
+.barre-depassee {
+  background: #dc2626;
+}
+
+/* ---------- Gestion de salaire : navigation entre les mois ---------- */
+.nav-mois {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 560px;
+  margin: 0 auto 8px;
+}
+
+/* Lien « Revenir au mois en cours », centré sous la navigation */
+.retour-mois {
+  display: block;
+  margin: 0 auto 12px;
+}
+
+.nav-mois .btn {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+}
+
+.mois-affiche {
+  font-size: 1.15rem;
+}
+
+.lien-bouton {
+  display: inline-block;
+  margin: 0 0 12px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.budget .lien-danger {
+  align-self: flex-start;
+  margin: 12px 0 0;
+  color: var(--texte-doux);
+}
+
+.budget .lien-danger:hover {
+  color: #dc2626;
+}
+
+/* Mois sans budget : message centré et bouton de création, comme Projets */
+.budget-vide {
+  align-items: center;
+  gap: 12px;
+  padding: 32px 16px;
+  text-align: center;
+}
+
+.budget-vide p {
+  margin: 0;
+}
+
+/* ---------- Tableau récapitulatif des mois ---------- */
+.tableau-conteneur {
+  overflow-x: auto;
+  padding: 0;
+  transition: box-shadow 0.2s;
+}
+
+.tableau {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.tableau th,
+.tableau td {
+  padding: 10px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--bordure);
+  white-space: nowrap;
+}
+
+.tableau th {
+  color: var(--texte-doux);
+  font-weight: 500;
+}
+
+.tableau tbody tr {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.tableau tbody tr:hover {
+  background: var(--fond);
+}
+
+.tableau tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.tableau .ligne-active {
+  box-shadow: inset 4px 0 0 var(--accent);
+  font-weight: 600;
+}
+
+.tableau .nombre {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}

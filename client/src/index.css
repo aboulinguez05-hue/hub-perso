@@ -1,0 +1,53 @@
+/* Couleurs globales (variables CSS), réutilisées dans App.css.
+   Thème clair uniquement : le site garde un fond blanc même si Windows est en mode sombre. */
+:root {
+  color-scheme: light;
+  --fond: #dfe2e8;
+  --fond-carte: #ffffff;
+  --texte: #1c1e21;
+  --texte-doux: #5f6670;
+  --bordure: #e2e4e8;
+  --accent: #4f46e5;
+  /* Violet plus clair : boutons et cartes Contact */
+  --violet-clair: #818cf8;
+  --violet-clair-survol: #6f7af4;
+
+  /* Verre du menu */
+  --verre: rgba(255, 255, 255, 0.88);
+  --verre-bord: rgba(255, 255, 255, 0.75);
+  --verre-ombre: rgba(30, 35, 90, 0.12);
+
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  color: var(--texte);
+  background: var(--fond);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Taches de couleur très douces sur le fond : elles défilent avec la page
+   et passent derrière le menu en verre, ce qui rend l'effet visible */
+body {
+  margin: 0;
+  background-color: var(--fond);
+  background-image:
+    radial-gradient(520px 420px at 8% 12%, rgba(99, 102, 241, 0.16), transparent 70%),
+    radial-gradient(460px 380px at 92% 30%, rgba(14, 165, 233, 0.12), transparent 70%),
+    radial-gradient(520px 460px at 4% 62%, rgba(236, 72, 153, 0.1), transparent 70%),
+    radial-gradient(480px 420px at 85% 88%, rgba(34, 197, 94, 0.1), transparent 70%);
+  background-repeat: no-repeat;
+}
+
+a {
+  color: var(--accent);
+}
+
+/* Tous les titres du site en Poppins (chargée dans index.html) */
+h1,
+h2,
+h3 {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-weight: 600;
+}
