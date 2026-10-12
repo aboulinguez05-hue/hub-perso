@@ -11,19 +11,87 @@
   flex-direction: column;
 }
 
-/* ---------- Menu vertical ---------- */
+/* ---------- Menu vertical : panneau flottant ---------- */
 .sidebar {
   position: sticky;
-  top: 0;
-  height: 100vh;
-  width: 100px;
+  top: 12px;
+  z-index: 10;
+  height: calc(100vh - 24px);
+  width: 108px;
+  margin: 12px 0 12px 12px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
   gap: 24px;
   padding: 24px 8px;
-  background: var(--fond-carte);
-  border-right: 1px solid var(--bordure);
+  border-radius: 24px;
+}
+
+/* ---------- Effet « liquid glass » ----------
+   Le flou (backdrop-filter) floute et sature ce qui passe derrière le menu,
+   les ombres intérieures dessinent l'épaisseur du verre, et un reflet lumineux
+   glisse quand on fait défiler la page (variable --defilement, réglée dans Header.jsx). */
+.verre {
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--verre);
+  border: 1px solid var(--verre-bord);
+  -webkit-backdrop-filter: blur(16px) saturate(170%);
+  backdrop-filter: blur(16px) saturate(170%);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.9),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.35),
+    inset 1px 0 0 rgba(255, 255, 255, 0.5),
+    0 8px 30px var(--verre-ombre);
+  transition: background 0.35s, box-shadow 0.35s, backdrop-filter 0.35s;
+}
+
+/* Reflet : une bande de lumière diagonale qui suit le défilement */
+.verre::before {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 38%,
+    rgba(255, 255, 255, 0.55) 48%,
+    rgba(255, 255, 255, 0.12) 54%,
+    transparent 62%
+  );
+  transform: translateY(calc(var(--defilement, 0) * 60% - 30%));
+  transition: transform 0.15s linear;
+}
+
+/* Liseré lumineux sur le bord du verre */
+.verre::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: inherit;
+  background: radial-gradient(120% 60% at 30% 0%, rgba(255, 255, 255, 0.5), transparent 55%);
+}
+
+/* Pendant le défilement, le verre devient plus transparent et plus profond */
+.verre.defile {
+  background: rgba(255, 255, 255, 0.78);
+  -webkit-backdrop-filter: blur(22px) saturate(200%);
+  backdrop-filter: blur(22px) saturate(200%);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.95),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.4),
+    inset 1px 0 0 rgba(255, 255, 255, 0.6),
+    0 14px 40px rgba(30, 35, 90, 0.18);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .verre,
+  .verre::before {
+    transition: none;
+  }
 }
 
 /* Photo au-dessus du nom, centrés */
@@ -85,7 +153,7 @@
 
 /* Effet au survol : fond, couleur, léger décalage à droite et barre qui grandit */
 .onglet:hover {
-  background: var(--fond);
+  background: rgba(255, 255, 255, 0.7);
   color: var(--texte);
   transform: translateX(3px);
 }
@@ -109,14 +177,15 @@
     flex-direction: column;
   }
 
+  /* Barre collée en haut : le contenu défile dessous, à travers le verre */
   .sidebar {
-    position: static;
+    top: 8px;
     height: auto;
-    width: 100%;
+    width: auto;
+    margin: 8px 8px 0;
     gap: 16px;
-    padding: 16px;
-    border-right: none;
-    border-bottom: 1px solid var(--bordure);
+    padding: 14px 16px;
+    border-radius: 20px;
   }
 
   .profil {
@@ -216,6 +285,12 @@
 .periode {
   font-size: 0.9rem;
   color: var(--texte-doux);
+}
+
+.detail {
+  font-size: 0.95rem;
+  color: var(--texte-doux);
+  line-height: 1.5;
 }
 
 .tags {

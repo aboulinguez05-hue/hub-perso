@@ -1,29 +1,87 @@
-// TODO : remplace les textes par ton vrai parcours
-const PARCOURS = [
-  { periode: '20XX – aujourd’hui', titre: 'Poste / formation actuelle', lieu: 'Entreprise ou école' },
-  { periode: '20XX – 20XX', titre: 'Formation précédente', lieu: 'École' },
+// Expériences et scolarité, de la plus ancienne à la plus récente
+const EXPERIENCES = [
+  {
+    periode: 'Février 2022',
+    titre: 'Stage chez Normandie Koï',
+    lieu: 'Bernières (76)',
+    detail: 'Mise en rayon, entretien des aquariums, analyses des eaux.',
+  },
+  {
+    periode: 'Février 2023',
+    titre: 'Stage à la Clinique Vétérinaire de l’Aérodrome',
+    lieu: 'Saint-Romain-de-Colbosc (76)',
+    detail: 'Assistance sur divers soins.',
+  },
+  {
+    periode: 'Février 2023',
+    titre: 'Stage chez Trace Software',
+    lieu: 'Saint-Romain-de-Colbosc (76)',
+    detail: 'Initiation au code HTML, CSS et JavaScript, découverte des métiers de développeur, du marketing et de la communication.',
+  },
+  {
+    periode: 'Avril 2023',
+    titre: 'Stage à l’École 42',
+    lieu: 'Le Havre (76)',
+    detail: 'Stage d’immersion d’une semaine auprès des étudiants en développement informatique, réalisation de divers exercices de codage.',
+  },
+  {
+    periode: 'Janvier 2025 – aujourd’hui',
+    titre: 'Exercices d’application OpenClassrooms',
+    lieu: 'En autonomie',
+  },
+  {
+    periode: '2025 – aujourd’hui',
+    titre: 'Alternance développeur chez Groupe Trace',
+    lieu: 'Saint-Romain-de-Colbosc (76)',
+    detail: 'Développement d’une API en C# et .NET avec une base PostgreSQL : import automatique des courbes de charge EDF, stockage des mesures et création de routes pour les consulter.',
+  },
 ]
 
-const COMPETENCES = ['C#', '.NET', 'React', 'JavaScript', 'SQL', 'Git']
+const SCOLARITE = [
+  { periode: '2010 – 2017', titre: 'École élémentaire Henri Blanc', lieu: 'Bréauté (76)' },
+  { periode: '2017 – 2019', titre: 'Collège André Gide', lieu: 'Goderville (76)' },
+  { periode: '2019 – 2022', titre: 'Collège La Providence', lieu: 'Fécamp (76)' },
+  { periode: '2022 – 2025', titre: 'Lycée La Providence', lieu: 'Fécamp (76)' },
+  {
+    periode: 'Juin 2025',
+    titre: 'Bac général, spécialités Mathématiques et Physique-Chimie',
+    lieu: 'Lycée La Providence, Fécamp (76)',
+  },
+]
+
+const COMPETENCES = ['C#', '.NET', 'React', 'JavaScript', 'HTML', 'CSS', 'SQL', 'Git']
+
+// Une liste d'étapes affichées en cartes : période, titre, lieu et détail éventuel
+function Etapes({ etapes }) {
+  return (
+    <ul className="timeline">
+      {etapes.map((etape) => (
+        <li key={etape.periode + etape.titre} className="carte">
+          <span className="periode">{etape.periode}</span>
+          <strong>{etape.titre}</strong>
+          <span>{etape.lieu}</span>
+          {etape.detail && <span className="detail">{etape.detail}</span>}
+        </li>
+      ))}
+    </ul>
+  )
+}
 
 function APropos() {
   return (
     <section>
-      <h2>À propos de moi</h2>
+      <h2>Mon parcours</h2>
       <p>
-        Présente-toi ici en quelques lignes : qui tu es, ce qui te motive, ce que tu cherches.
+        Bachelier en 2025 avec les spécialités mathématiques et physique-chimie, je me forme au
+        développement informatique. Mes stages à l’École 42 et chez Trace Software m’ont donné
+        envie d’en faire mon métier.
       </p>
 
-      <h3>Parcours</h3>
-      <ul className="timeline">
-        {PARCOURS.map((etape) => (
-          <li key={etape.titre} className="carte">
-            <span className="periode">{etape.periode}</span>
-            <strong>{etape.titre}</strong>
-            <span>{etape.lieu}</span>
-          </li>
-        ))}
-      </ul>
+      <h3>Expérience</h3>
+      <Etapes etapes={EXPERIENCES} />
+
+      <h3>Scolarité</h3>
+      <Etapes etapes={SCOLARITE} />
 
       <h3>Compétences</h3>
       <div className="tags">

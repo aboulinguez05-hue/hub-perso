@@ -1,11 +1,18 @@
-/* Couleurs globales (variables CSS), réutilisées dans App.css */
+/* Couleurs globales (variables CSS), réutilisées dans App.css.
+   Thème clair uniquement : le site garde un fond blanc même si Windows est en mode sombre. */
 :root {
-  --fond: #ffffff;
-  --fond-carte: #f4f5f7;
+  color-scheme: light;
+  --fond: #dfe2e8;
+  --fond-carte: #ffffff;
   --texte: #1c1e21;
   --texte-doux: #5f6670;
   --bordure: #e2e4e8;
   --accent: #4f46e5;
+
+  /* Verre du menu */
+  --verre: rgba(255, 255, 255, 0.88);
+  --verre-bord: rgba(255, 255, 255, 0.75);
+  --verre-ombre: rgba(30, 35, 90, 0.12);
 
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.6;
@@ -13,25 +20,21 @@
   background: var(--fond);
 }
 
-/* Mode sombre automatique selon le réglage du système */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --fond: #16181d;
-    --fond-carte: #1f2229;
-    --texte: #e8eaed;
-    --texte-doux: #9aa0a6;
-    --bordure: #2e323a;
-    --accent: #818cf8;
-  }
-}
-
 * {
   box-sizing: border-box;
 }
 
+/* Taches de couleur très douces sur le fond : elles défilent avec la page
+   et passent derrière le menu en verre, ce qui rend l'effet visible */
 body {
   margin: 0;
-  background: var(--fond);
+  background-color: var(--fond);
+  background-image:
+    radial-gradient(520px 420px at 8% 12%, rgba(99, 102, 241, 0.16), transparent 70%),
+    radial-gradient(460px 380px at 92% 30%, rgba(14, 165, 233, 0.12), transparent 70%),
+    radial-gradient(520px 460px at 4% 62%, rgba(236, 72, 153, 0.1), transparent 70%),
+    radial-gradient(480px 420px at 85% 88%, rgba(34, 197, 94, 0.1), transparent 70%);
+  background-repeat: no-repeat;
 }
 
 a {

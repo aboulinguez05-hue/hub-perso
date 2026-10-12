@@ -10,7 +10,7 @@ import './App.css'
 // Liste des onglets : id (clé interne) + libellé affiché dans le menu
 const ONGLETS = [
   { id: 'accueil', label: 'Accueil' },
-  { id: 'apropos', label: 'À propos de moi' },
+  { id: 'apropos', label: 'Mon parcours' },
   { id: 'projets', label: 'Projets' },
   { id: 'salaire', label: 'Gestion de salaire' },
   { id: 'contact', label: 'Contact' },
