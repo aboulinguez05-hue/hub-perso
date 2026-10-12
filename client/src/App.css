@@ -168,14 +168,14 @@
   width: 4px;
   height: 0;
   border-radius: 4px;
-  background: var(--accent);
+  background: #b8bdc6;
   transform: translateY(-50%);
   transition: height 0.2s;
 }
 
-/* Effet au survol : fond, couleur, léger décalage à droite et barre qui grandit */
+/* Effet au survol : fond gris clair, couleur, léger décalage à droite et barre grise qui grandit */
 .onglet:hover {
-  background: rgba(255, 255, 255, 0.7);
+  background: #eceef2;
   color: var(--texte);
   transform: translateX(3px);
 }
