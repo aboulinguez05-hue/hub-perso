@@ -4,6 +4,7 @@
 // Clés sous lesquelles les données sont enregistrées dans le navigateur
 const CLE_PROJETS = 'hub-perso-projets'
 const CLE_VERSEMENTS = 'hub-perso-versements'
+const CLE_SOLDE = 'hub-perso-solde'
 
 function lire(cle) {
   try {
@@ -50,11 +51,30 @@ export function chargerVersements() {
 
 export const sauvegarderVersements = (versements) => ecrire(CLE_VERSEMENTS, versements)
 
-// Toutes les données de la page Projets en un seul objet (format utilisé par useDonnees)
-export const lireDonneesProjets = () => ({ projets: chargerProjets(), versements: chargerVersements() })
+// Argent ajouté au solde général, avant d'être réparti : { id, montant, date, note }
+export const chargerAjoutsSolde = () => lire(CLE_SOLDE) ?? []
 
-export const ecrireDonneesProjets = ({ projets, versements }) =>
-  sauvegarderProjets(projets) && sauvegarderVersements(versements)
+// Solde général = argent ajouté au solde − argent déjà réparti dans les projets
+// (les ajouts d'un projet issus d'une répartition portent le champ "repartition").
+// Supprimer un de ces ajouts dans un projet remet donc automatiquement l'argent dans le solde.
+export function calculerSolde(ajoutsSolde, versements) {
+  const ajoute = ajoutsSolde.reduce((somme, a) => somme + a.montant, 0)
+  const reparti = versements.filter((v) => v.repartition).reduce((somme, v) => somme + v.montant, 0)
+  return arrondir(ajoute - reparti)
+}
+
+// Arrondi au centime (évite les 0,1 + 0,2 = 0,30000000000000004)
+export const arrondir = (montant) => Math.round(montant * 100) / 100
+
+// Toutes les données de la page Projets en un seul objet (format utilisé par useDonnees)
+export const lireDonneesProjets = () => ({
+  projets: chargerProjets(),
+  versements: chargerVersements(),
+  ajoutsSolde: chargerAjoutsSolde(),
+})
+
+export const ecrireDonneesProjets = ({ projets, versements, ajoutsSolde }) =>
+  sauvegarderProjets(projets) && sauvegarderVersements(versements) && ecrire(CLE_SOLDE, ajoutsSolde)
 
 // Réduit une image choisie par le visiteur (400 px de large maximum) et la renvoie en texte "data:..."
 // pour qu'elle tienne dans le stockage du navigateur
