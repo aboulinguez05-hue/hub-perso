@@ -504,8 +504,8 @@
   animation-delay: calc(var(--rang) * 60ms);
 }
 
-/* Toute la carte est le lien : fond violet du site, texte blanc ;
-   au survol le violet fonce et une ombre légère apparaît */
+/* Toute la carte est le lien : fond violet clair, texte blanc ;
+   au survol le violet fonce un peu et une ombre légère apparaît */
 .carte-contact {
   flex: 1;
   display: flex;
@@ -513,7 +513,7 @@
   gap: 6px;
   padding: 20px 22px;
   border-radius: 14px;
-  background: var(--accent);
+  background: #818cf8;
   color: white;
   font-size: 1.1rem;
   text-decoration: none;
@@ -521,8 +521,8 @@
 }
 
 .carte-contact:hover {
-  background: #4338ca;
-  box-shadow: 0 8px 22px rgba(79, 70, 229, 0.3);
+  background: #6f7af4;
+  box-shadow: 0 8px 22px rgba(99, 102, 241, 0.3);
 }
 
 .carte-contact .detail {
