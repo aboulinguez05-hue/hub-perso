@@ -705,6 +705,21 @@
   margin-bottom: 20px;
 }
 
+/* Même fondu que le changement d'onglet quand on ouvre ou ferme le formulaire de projet */
+.formulaire-projet,
+.projets-vide,
+.btn-nouveau-projet {
+  animation: fondu 0.3s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .formulaire-projet,
+  .projets-vide,
+  .btn-nouveau-projet {
+    animation: none;
+  }
+}
+
 /* Élément qui prend toute la largeur du formulaire */
 .formulaire .champ-plein {
   flex-basis: 100%;
