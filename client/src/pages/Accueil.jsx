@@ -1,12 +1,14 @@
 // Mes passions, affichées en cartes sous « Qui suis-je »
 const PASSIONS = [
   {
-    titre: 'Boxe',
-    texte: '4 ans de pratique. La boxe m’apprend la discipline, la rigueur et à ne rien lâcher.',
+    titre: 'Hardware',
+    texte:
+      'Je suis les nouveautés (cartes graphiques, processeurs) et j’aime choisir les pièces, monter et optimiser des PC. Le mien : Ryzen 7 5800X et RTX 3080.',
   },
   {
     titre: 'Musculation',
-    texte: 'Des séances régulières à la salle pour garder la forme et me fixer des objectifs.',
+    texte:
+      'Des séances régulières à la salle pour garder la forme et me fixer des objectifs, avec 3 ans de boxe derrière moi.',
   },
   {
     titre: 'Jeux vidéo sur PC',
