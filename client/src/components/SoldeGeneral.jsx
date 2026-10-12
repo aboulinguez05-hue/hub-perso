@@ -62,22 +62,6 @@ function FormulaireRepartition({ solde, projets, onValider, onAnnuler }) {
 
   const changer = (id, valeur) => setMontants({ ...montants, [id]: valeur })
 
-  // Pré-remplit chaque projet avec la même part (le dernier récupère les centimes restants)
-  function partsEgales() {
-    const part = Math.floor((solde / projets.length) * 100) / 100
-    const nouveaux = {}
-    projets.forEach((p, i) => {
-      nouveaux[p.id] = String(i === projets.length - 1 ? arrondir(solde - part * (projets.length - 1)) : part)
-    })
-    setMontants(nouveaux)
-  }
-
-  // Met tout ce qui n'est pas encore réparti dans ce projet
-  function toutLeReste(id) {
-    const actuel = Number(montants[id]) || 0
-    changer(id, String(arrondir(actuel + reste)))
-  }
-
   function valider(event) {
     event.preventDefault()
     if (reste < 0 || total <= 0) return
@@ -89,14 +73,11 @@ function FormulaireRepartition({ solde, projets, onValider, onAnnuler }) {
 
   return (
     <form className="formulaire-repartition" onSubmit={valider}>
-      <div className="entete-repartition">
-        <span className={reste < 0 ? 'reste-negatif' : 'periode'}>
-          {reste < 0
-            ? `Tu dépasses le solde de ${formatEuros(-reste)}`
-            : `Reste à répartir : ${formatEuros(reste)}`}
-        </span>
-        <button type="button" className="lien-bouton" onClick={partsEgales}>Parts égales</button>
-      </div>
+      <span className={reste < 0 ? 'reste-negatif' : 'periode'}>
+        {reste < 0
+          ? `Tu dépasses le solde de ${formatEuros(-reste)}`
+          : `Reste à répartir : ${formatEuros(reste)}`}
+      </span>
 
       {projets.map((p) => (
         <div key={p.id} className="ligne-repartition">
@@ -113,14 +94,6 @@ function FormulaireRepartition({ solde, projets, onValider, onAnnuler }) {
             />
             €
           </span>
-          <button
-            type="button"
-            className="lien-bouton"
-            onClick={() => toutLeReste(p.id)}
-            disabled={reste <= 0}
-          >
-            Tout le reste
-          </button>
         </div>
       ))}
 
