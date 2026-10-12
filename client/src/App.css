@@ -293,13 +293,6 @@
   color: var(--texte-doux);
 }
 
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 24px;
-}
-
 .btn {
   padding: 10px 18px;
   border: 2px solid var(--accent);
@@ -443,6 +436,49 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+/* ---------- Accueil : « Qui suis-je ? » et « Mes passions » ---------- */
+.section-accueil {
+  margin-top: 48px;
+}
+
+/* Grille de cartes : autant de colonnes que la largeur le permet */
+.grille-passions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 12px;
+}
+
+/* Petite carte blanche ; ombre légère au survol, comme les blocs de la frise */
+.carte-passion {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border: 1px solid var(--bordure);
+  border-radius: 12px;
+  background: var(--fond-carte);
+  transition: box-shadow 0.2s;
+  animation: fondu 0.3s ease-out both;
+  animation-delay: calc(var(--rang) * 60ms);
+}
+
+.carte-passion:hover {
+  box-shadow: 0 6px 18px rgba(30, 35, 60, 0.12);
+}
+
+.carte-passion .detail {
+  font-size: 0.88rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carte-passion {
+    animation: none;
+  }
 }
 
 /* ---------- Titres centrés (page « Mon parcours ») ---------- */

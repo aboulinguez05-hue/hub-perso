@@ -1,27 +1,59 @@
 import photo from '../assets/photo.jpg'
 
-function Accueil({ onChange }) {
+// Mes passions, affichées en cartes sous « Qui suis-je »
+const PASSIONS = [
+  {
+    titre: 'Boxe',
+    texte: '4 ans de pratique. La boxe m’apprend la discipline, la rigueur et à ne rien lâcher.',
+  },
+  {
+    titre: 'Musculation',
+    texte: 'Des séances régulières à la salle pour garder la forme et me fixer des objectifs.',
+  },
+  {
+    titre: 'Jeux vidéo sur PC',
+    texte: 'Mon moment pour décompresser, seul ou entre amis.',
+  },
+  {
+    titre: 'Voitures',
+    texte: 'Passionné d’automobile : le design, les performances et les nouveautés.',
+  },
+]
+
+function Accueil() {
   return (
-    <section className="hero">
-      <img src={photo} alt="Photo d'Antoine Boulinguez" className="photo" />
+    <>
+      <section className="hero">
+        <img src={photo} alt="Photo d'Antoine Boulinguez" className="photo" />
 
-      <div>
-        <h1>Bonjour, je suis Antoine Boulinguez</h1>
-        <p className="sous-titre">
-          {/* TODO : remplace par une phrase qui te décrit */}
-          Développeur en devenir — bienvenue sur mon hub personnel.
-        </p>
-
-        <div className="actions">
-          <button type="button" className="btn" onClick={() => onChange('apropos')}>
-            Découvrir mon parcours
-          </button>
-          <button type="button" className="btn btn-secondaire" onClick={() => onChange('projets')}>
-            Mes projets d'épargne
-          </button>
+        <div>
+          <h1>Bonjour, je suis Antoine Boulinguez</h1>
+          <p className="sous-titre">Développeur en devenir — bienvenue sur mon hub personnel.</p>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <section className="section-accueil">
+        <h2 className="titre-centre">Qui suis-je ?</h2>
+        <p className="intro-centree">
+          J’ai 19 ans et je vis en Normandie. Je suis développeur en alternance chez Groupe Trace,
+          où je travaille sur une API en C# et .NET. J’aime apprendre en construisant des projets
+          concrets, comme ce site.
+        </p>
+      </section>
+
+      <section className="section-accueil">
+        <h2 className="titre-centre">Mes passions</h2>
+        <ul className="grille-passions">
+          {PASSIONS.map((passion, index) => (
+            // --rang décale l'apparition de chaque carte (effet cascade, comme la frise)
+            <li key={passion.titre} className="carte-passion" style={{ '--rang': index }}>
+              <strong>{passion.titre}</strong>
+              <span className="detail">{passion.texte}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </>
   )
 }
 

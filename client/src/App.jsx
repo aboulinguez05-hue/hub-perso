@@ -45,7 +45,7 @@ function App() {
         <main className="contenu">
           {/* La clé change avec l'onglet : React recrée ce bloc, ce qui relance l'effet de fondu */}
           <div key={ongletActif} className="apparition">
-            {ongletActif === 'accueil' && <Accueil onChange={changerOnglet} />}
+            {ongletActif === 'accueil' && <Accueil />}
             {ongletActif === 'apropos' && <APropos />}
             {ongletActif === 'projets' && <Projets />}
             {ongletActif === 'salaire' && <Salaire />}
