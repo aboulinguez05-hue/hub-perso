@@ -1,5 +1,7 @@
 import { useState } from 'react'
+import BandeauCompte from '../components/BandeauCompte.jsx'
 import { formatEuros } from '../donnees/epargne.js'
+import { useDonnees } from '../donnees/useDonnees.js'
 
 // Clé sous laquelle les budgets sont enregistrés dans le navigateur du visiteur (localStorage) :
 // chacun a ses propres budgets, et personne d'autre ne peut les voir.
@@ -55,23 +57,60 @@ function chargerBudgets() {
   }
 }
 
+// Format utilisé par useDonnees : { budgets } (renvoie false si l'enregistrement échoue)
+const lireDonneesSalaire = () => ({ budgets: chargerBudgets() })
+
+function ecrireDonneesSalaire({ budgets }) {
+  try {
+    localStorage.setItem(CLE_STOCKAGE, JSON.stringify(budgets))
+    return true
+  } catch {
+    return false
+  }
+}
+
 function Salaire() {
-  const [budgets, setBudgetsEtat] = useState(chargerBudgets)
+  // Budgets : dans le navigateur, ou dans le compte Google si on est connecté
+  const { valeur: donnees, modifier, erreur: erreurStockage, connecte } = useDonnees(
+    'salaire',
+    lireDonneesSalaire,
+    ecrireDonneesSalaire,
+  )
   const [moisAffiche, setMoisAffiche] = useState(moisActuel)
   const [nouvelleDepense, setNouvelleDepense] = useState('')
-  const [erreurStockage, setErreurStockage] = useState(false)
 
-  // À chaque modification, on met à jour l'affichage et on enregistre dans le navigateur
-  // (avec un message si l'enregistrement échoue, par exemple stockage plein ou bloqué)
-  function setBudgets(nouveaux) {
-    setBudgetsEtat(nouveaux)
-    try {
-      localStorage.setItem(CLE_STOCKAGE, JSON.stringify(nouveaux))
-      setErreurStockage(false)
-    } catch {
-      setErreurStockage(true)
-    }
+  const entete = (
+    <>
+      <h2 className="titre-centre">Gestion de salaire</h2>
+      <p className="intro-centree">
+        Suis ton salaire et tes dépenses mois par mois. Personne d’autre que toi ne peut voir tes
+        données.
+      </p>
+
+      <BandeauCompte />
+
+      {erreurStockage && (
+        <p className="message-erreur intro-centree">
+          {connecte
+            ? 'Impossible d’enregistrer dans ton compte. Vérifie ta connexion internet.'
+            : 'Impossible d’enregistrer : le stockage du navigateur est plein ou bloqué.'}
+        </p>
+      )}
+    </>
+  )
+
+  // Données du compte pas encore reçues
+  if (donnees === null) {
+    return (
+      <section>
+        {entete}
+        <p className="periode intro-centree">Chargement de tes budgets…</p>
+      </section>
+    )
   }
+
+  const budgets = donnees.budgets
+  const setBudgets = (nouveaux) => modifier({ budgets: nouveaux })
 
   // Tous les mois remplis, du plus récent au plus ancien
   const moisRemplis = Object.keys(budgets).sort().reverse()
@@ -125,17 +164,7 @@ function Salaire() {
 
   return (
     <section>
-      <h2 className="titre-centre">Gestion de salaire</h2>
-      <p className="intro-centree">
-        Suis ton salaire et tes dépenses mois par mois. Tes données restent uniquement dans ton
-        navigateur : personne d’autre ne peut les voir.
-      </p>
-
-      {erreurStockage && (
-        <p className="message-erreur intro-centree">
-          Impossible d’enregistrer : le stockage du navigateur est plein ou bloqué.
-        </p>
-      )}
+      {entete}
 
       {/* Navigation entre les mois */}
       <div className="nav-mois">

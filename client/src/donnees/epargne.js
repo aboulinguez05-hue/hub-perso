@@ -50,6 +50,12 @@ export function chargerVersements() {
 
 export const sauvegarderVersements = (versements) => ecrire(CLE_VERSEMENTS, versements)
 
+// Toutes les données de la page Projets en un seul objet (format utilisé par useDonnees)
+export const lireDonneesProjets = () => ({ projets: chargerProjets(), versements: chargerVersements() })
+
+export const ecrireDonneesProjets = ({ projets, versements }) =>
+  sauvegarderProjets(projets) && sauvegarderVersements(versements)
+
 // Réduit une image choisie par le visiteur (400 px de large maximum) et la renvoie en texte "data:..."
 // pour qu'elle tienne dans le stockage du navigateur
 export function reduireImage(fichier) {

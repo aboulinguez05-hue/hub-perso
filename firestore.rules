@@ -1,0 +1,12 @@
+rules_version = '2';
+
+// Règles de sécurité Firestore du site (à coller dans la console Firebase → Firestore → Règles).
+// Chaque personne connectée peut lire et modifier uniquement ses propres données,
+// rangées sous utilisateurs/{son uid}/donnees/... ; tout le reste est refusé.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /utilisateurs/{uid}/donnees/{document} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+  }
+}

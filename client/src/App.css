@@ -243,11 +243,75 @@
   }
 }
 
+/* Écran d'ordinateur classique : menu un peu plus grand */
+@media (min-width: 1100px) {
+  .sidebar {
+    top: 20px;
+    width: 9.5rem;
+    margin: 20px 0 20px 20px;
+  }
+
+  .panneau {
+    gap: 26px;
+    padding: 22px 10px;
+    border-radius: 26px;
+  }
+
+  .avatar {
+    width: 3.25rem;
+    height: 3.25rem;
+  }
+
+  .logo {
+    font-size: 0.95rem;
+  }
+
+  .titre-groupe {
+    font-size: 0.68rem;
+  }
+
+  .onglet {
+    padding: 10px 8px;
+    font-size: 0.88rem;
+  }
+
+  :root {
+    --largeur-contenu: 1000px;
+  }
+}
+
+/* Grand écran : tout le site grossit un peu (les tailles en rem suivent la taille de base) */
+@media (min-width: 1600px) {
+  :root {
+    font-size: 17px;
+  }
+
+  .sidebar {
+    width: 11rem;
+  }
+
+  :root {
+    --largeur-contenu: 1150px;
+  }
+}
+
+/* Très grand écran (2K, 4K) */
+@media (min-width: 2200px) {
+  :root {
+    font-size: 19px;
+  }
+
+  :root {
+    --largeur-contenu: 1300px;
+  }
+}
+
 /* ---------- Contenu ---------- */
 .contenu {
   flex: 1;
   width: 100%;
-  max-width: 900px;
+  /* 900px maximum, un peu plus sur grand écran (variable réglée dans les media queries au-dessus) */
+  max-width: var(--largeur-contenu, 900px);
   margin: 0 auto;
   padding: 48px 24px;
   /* Colonne flexible : une page peut occuper toute la hauteur disponible (ex. Contact) */
@@ -615,6 +679,24 @@
   text-align: center;
   color: var(--texte-doux);
   border-top: 1px solid var(--bordure);
+}
+
+/* ---------- Bandeau de connexion Google (Projets et Gestion de salaire) ---------- */
+.bandeau-compte {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 16px;
+  margin: 0 auto 20px;
+  max-width: 640px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.bandeau-compte .lien-bouton,
+.bandeau-compte .message-erreur {
+  margin: 0;
 }
 
 /* ---------- Carte d'un projet d'épargne ---------- */
