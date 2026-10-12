@@ -1,14 +1,14 @@
 import { useState } from 'react'
+import BandeauCompte from '../components/BandeauCompte.jsx'
 import {
   aujourdhui,
-  chargerProjets,
-  chargerVersements,
+  ecrireDonneesProjets,
   formatDate,
   formatEuros,
+  lireDonneesProjets,
   reduireImage,
-  sauvegarderProjets,
-  sauvegarderVersements,
 } from '../donnees/epargne.js'
+import { useDonnees } from '../donnees/useDonnees.js'
 
 // Formulaire de création ou de modification d'un projet (nom, objectif, image)
 function FormulaireProjet({ projet, onValider, onAnnuler }) {
@@ -156,12 +156,17 @@ function CarteProjet({ projet, ajouts, rang, onModifier, onSupprimer, onSupprime
 }
 
 function Projets() {
-  const [projets, setProjetsEtat] = useState(chargerProjets)
-  const [versements, setVersementsEtat] = useState(chargerVersements)
+  // Projets et ajouts : dans le navigateur, ou dans le compte Google si on est connecté
+  const { valeur: donnees, modifier, erreur: erreurStockage, connecte } = useDonnees(
+    'projets',
+    lireDonneesProjets,
+    ecrireDonneesProjets,
+  )
+  const projets = donnees?.projets ?? []
+  const versements = donnees?.versements ?? []
 
   // null = aucun formulaire ouvert, 'nouveau' = création, sinon l'id du projet modifié
   const [edition, setEdition] = useState(null)
-  const [erreurStockage, setErreurStockage] = useState(false)
 
   // Champs du formulaire « Ajouter de l'argent »
   const [projetId, setProjetId] = useState('')
@@ -169,17 +174,9 @@ function Projets() {
   const [date, setDate] = useState(aujourdhui)
   const [note, setNote] = useState('')
 
-  // À chaque changement, on met à jour l'affichage et on enregistre dans le navigateur
-  // (avec un message si l'enregistrement échoue, par exemple stockage plein)
-  function setProjets(nouveaux) {
-    setProjetsEtat(nouveaux)
-    setErreurStockage(!sauvegarderProjets(nouveaux))
-  }
-
-  function setVersements(nouveaux) {
-    setVersementsEtat(nouveaux)
-    setErreurStockage(!sauvegarderVersements(nouveaux))
-  }
+  // Chaque changement met à jour l'affichage et enregistre (navigateur ou compte)
+  const setProjets = (nouveaux) => modifier({ projets: nouveaux, versements })
+  const setVersements = (nouveaux) => modifier({ projets, versements: nouveaux })
 
   // Projet sélectionné dans le formulaire d'ajout (le premier par défaut)
   const projetChoisi = projets.some((p) => p.id === projetId) ? projetId : projets[0]?.id
@@ -195,8 +192,11 @@ function Projets() {
 
   function supprimerProjet(projet) {
     if (!confirm(`Supprimer le projet « ${projet.nom} » et tous ses ajouts ?`)) return
-    setProjets(projets.filter((p) => p.id !== projet.id))
-    setVersements(versements.filter((v) => v.projetId !== projet.id))
+    // Un seul enregistrement pour le projet et ses ajouts
+    modifier({
+      projets: projets.filter((p) => p.id !== projet.id),
+      versements: versements.filter((v) => v.projetId !== projet.id),
+    })
   }
 
   function ajouterVersement(event) {
@@ -223,18 +223,23 @@ function Projets() {
     <section>
       <h2 className="titre-centre">Projets</h2>
       <p className="intro-centree">
-        Suis tes projets d’épargne. Tes données restent uniquement dans ton navigateur : personne
-        d’autre ne peut les voir.
+        Suis tes projets d’épargne. Personne d’autre que toi ne peut voir tes données.
       </p>
+
+      <BandeauCompte />
 
       {erreurStockage && (
         <p className="message-erreur">
-          Impossible d’enregistrer : le stockage du navigateur est plein ou bloqué. Essaie une image
-          plus légère ou supprime un projet.
+          {connecte
+            ? 'Impossible d’enregistrer dans ton compte. Vérifie ta connexion internet, ou essaie une image plus légère.'
+            : 'Impossible d’enregistrer : le stockage du navigateur est plein ou bloqué. Essaie une image plus légère ou supprime un projet.'}
         </p>
       )}
 
-      {edition ? (
+      {/* Données du compte pas encore reçues */}
+      {donnees === null ? (
+        <p className="periode intro-centree">Chargement de tes projets…</p>
+      ) : edition ? (
         <FormulaireProjet
           // La clé recrée le formulaire quand on passe d'un projet à un autre
           key={edition}
