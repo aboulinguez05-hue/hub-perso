@@ -77,20 +77,20 @@ function Etapes({ etapes }) {
 function APropos() {
   return (
     <section>
-      <h2>Mon parcours</h2>
-      <p>
+      <h2 className="titre-centre">Mon parcours</h2>
+      <p className="intro-centree">
         Bachelier en 2025 avec les spécialités mathématiques et physique-chimie, je me forme au
         développement informatique. Mes stages à l’École 42 et chez Trace Software m’ont donné
         envie d’en faire mon métier.
       </p>
 
-      <h3>Expérience</h3>
+      <h3 className="titre-centre">Expérience</h3>
       <Etapes etapes={EXPERIENCES} />
 
-      <h3>Scolarité</h3>
+      <h3 className="titre-centre">Scolarité</h3>
       <Etapes etapes={SCOLARITE} />
 
-      <h3>Compétences</h3>
+      <h3 className="titre-centre">Compétences</h3>
       <div className="tags">
         {COMPETENCES.map((comp) => (
           <span key={comp} className="tag">{comp}</span>

@@ -445,6 +445,31 @@
   gap: 8px;
 }
 
+/* ---------- Titres centrés (page « Mon parcours ») ---------- */
+.titre-centre {
+  text-align: center;
+}
+
+/* Petit trait violet centré sous le titre */
+.titre-centre::after {
+  content: '';
+  display: block;
+  width: 36px;
+  height: 3px;
+  margin: 6px auto 0;
+  border-radius: 3px;
+  background: var(--accent);
+}
+
+.intro-centree {
+  text-align: center;
+}
+
+/* Les compétences sous un titre centré sont centrées aussi */
+.titre-centre + .tags {
+  justify-content: center;
+}
+
 .tag {
   padding: 4px 12px;
   border-radius: 999px;
