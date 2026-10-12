@@ -59,13 +59,26 @@ function FormulaireProjet({ projet, onValider, onAnnuler }) {
         />
       </label>
 
-      <label className="champ-plein">
+      <div className="champ-plein champ-image">
         Image
         <span className="choix-image">
+          {/* Le vrai champ fichier est caché : on clique sur ce petit bouton avec l'icône */}
+          <label className="btn-image" title="Choisir une image">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+              <path
+                d="M12 15V4m0 0L8 8m4-4 4 4M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <input type="file" accept="image/*" onChange={choisirImage} aria-label="Choisir une image" />
+          </label>
           {image && <img src={image} alt="" className="apercu-image" />}
-          <input type="file" accept="image/*" onChange={choisirImage} />
         </span>
-      </label>
+      </div>
 
       {erreur && <p className="message-erreur champ-plein">{erreur}</p>}
 

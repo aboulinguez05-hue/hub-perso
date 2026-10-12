@@ -725,10 +725,56 @@
   flex-basis: 100%;
 }
 
+/* Même présentation que les autres champs du formulaire (texte gris au-dessus) */
+.champ-image {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.9rem;
+  color: var(--texte-doux);
+}
+
 .choix-image {
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+/* Petit bouton carré violet clair avec l'icône d'envoi de fichier
+   (.formulaire devant pour passer avant le style des autres labels du formulaire) */
+.formulaire .btn-image {
+  position: relative;
+  flex: none;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--violet-clair);
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-image:hover {
+  background: var(--violet-clair-survol);
+}
+
+/* Contour visible quand on y arrive au clavier (Tab) */
+.btn-image:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Le champ fichier natif est caché mais reste utilisable (clic sur le bouton, clavier) */
+.btn-image input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .apercu-image {
