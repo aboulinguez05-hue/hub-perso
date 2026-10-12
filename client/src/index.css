@@ -8,6 +8,9 @@
   --texte-doux: #5f6670;
   --bordure: #e2e4e8;
   --accent: #4f46e5;
+  /* Violet plus clair : boutons et cartes Contact */
+  --violet-clair: #818cf8;
+  --violet-clair-survol: #6f7af4;
 
   /* Verre du menu */
   --verre: rgba(255, 255, 255, 0.88);
