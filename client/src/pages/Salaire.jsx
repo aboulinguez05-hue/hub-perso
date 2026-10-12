@@ -81,13 +81,14 @@ function Salaire() {
 
   const entete = (
     <>
+      {/* Connexion Google discrète, en haut à gauche */}
+      <BandeauCompte />
+
       <h2 className="titre-centre">Gestion de salaire</h2>
       <p className="intro-centree">
         Suis ton salaire et tes dépenses mois par mois. Personne d’autre que toi ne peut voir tes
         données.
       </p>
-
-      <BandeauCompte />
 
       {erreurStockage && (
         <p className="message-erreur intro-centree">
