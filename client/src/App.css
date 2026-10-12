@@ -184,13 +184,16 @@
   height: 60%;
 }
 
+/* Onglet actif : gris clair un peu plus marqué que le survol, texte en gras et barre grise visible */
 .onglet.actif {
-  background: var(--accent);
-  color: white;
+  background: #e3e6eb;
+  color: var(--texte);
+  font-weight: 600;
 }
 
 .onglet.actif::before {
-  height: 0;
+  height: 60%;
+  background: #8f96a3;
 }
 
 /* Sur téléphone, le menu repasse en haut, à l'horizontale */
