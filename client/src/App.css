@@ -781,53 +781,6 @@
   gap: 8px;
 }
 
-/* Petite courbe du solde, à côté du montant : vert = ajout, rouge = répartition */
-.courbe-solde {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  font-size: 0.75rem;
-}
-
-.courbe-solde svg {
-  width: 180px;
-  height: auto;
-  overflow: visible;
-}
-
-.trait-ajout,
-.trait-retrait {
-  stroke-width: 2;
-  stroke-linecap: round;
-}
-
-.trait-ajout {
-  stroke: #16a34a;
-}
-
-.trait-retrait {
-  stroke: #dc2626;
-}
-
-.point-ajout {
-  fill: #16a34a;
-}
-
-.point-retrait {
-  fill: #dc2626;
-}
-
-.point-ajout,
-.point-retrait {
-  transition: r 0.15s;
-}
-
-.zone-survol {
-  fill: transparent;
-  cursor: pointer;
-}
-
 /* Bouton désactivé (ex. « Répartir » quand le solde est vide) */
 .btn:disabled {
   opacity: 0.5;

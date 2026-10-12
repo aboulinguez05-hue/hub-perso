@@ -107,61 +107,6 @@ function FormulaireRepartition({ solde, projets, onValider, onAnnuler }) {
   )
 }
 
-// Petite courbe de l'évolution du solde : elle part de 0, monte en vert à chaque ajout au solde
-// et descend en rouge à chaque répartition. Le survol d'un point affiche l'opération dessous.
-const LARGEUR = 200
-const HAUTEUR = 56
-const MARGE = 6
-
-function CourbeSolde({ mouvements }) {
-  const [survole, setSurvole] = useState(null)
-
-  // Solde après chaque mouvement (le premier point est le départ, à 0)
-  const soldes = mouvements.reduce((liste, m) => [...liste, arrondir(liste.at(-1) + m.montant)], [0])
-  const min = Math.min(...soldes)
-  const max = Math.max(...soldes)
-
-  // Coordonnées dans le dessin : x régulier, y proportionnel au solde (haut = solde le plus élevé)
-  const x = (i) => MARGE + (i * (LARGEUR - 2 * MARGE)) / mouvements.length
-  const y = (valeur) => HAUTEUR - MARGE - ((valeur - min) / (max - min || 1)) * (HAUTEUR - 2 * MARGE)
-
-  const detail = survole !== null && mouvements[survole]
-
-  return (
-    <div className="courbe-solde">
-      <svg viewBox={`0 0 ${LARGEUR} ${HAUTEUR}`} role="img" aria-label="Évolution du solde">
-        {mouvements.map((m, i) => (
-          <line
-            key={m.id}
-            x1={x(i)}
-            y1={y(soldes[i])}
-            x2={x(i + 1)}
-            y2={y(soldes[i + 1])}
-            className={m.montant >= 0 ? 'trait-ajout' : 'trait-retrait'}
-          />
-        ))}
-        {mouvements.map((m, i) => (
-          <g key={m.id} onMouseEnter={() => setSurvole(i)} onMouseLeave={() => setSurvole(null)}>
-            {/* Zone invisible plus large pour faciliter le survol */}
-            <circle cx={x(i + 1)} cy={y(soldes[i + 1])} r="8" className="zone-survol" />
-            <circle
-              cx={x(i + 1)}
-              cy={y(soldes[i + 1])}
-              r={survole === i ? 4 : 2.5}
-              className={m.montant >= 0 ? 'point-ajout' : 'point-retrait'}
-            />
-          </g>
-        ))}
-      </svg>
-      <span className={detail ? (detail.montant >= 0 ? 'reste-positif' : 'reste-negatif') : 'periode'}>
-        {detail
-          ? `${formatDate(detail.date)} : ${detail.montant >= 0 ? '+' : '−'} ${formatEuros(Math.abs(detail.montant))}`
-          : 'Évolution du solde'}
-      </span>
-    </div>
-  )
-}
-
 // Carte « Solde à répartir » en haut de Projets : ajout d'argent, répartition et historique replié
 function SoldeGeneral({ donnees, modifier }) {
   const { projets, versements } = donnees
@@ -228,13 +173,6 @@ function SoldeGeneral({ donnees, modifier }) {
     ...repartitions.map((r) => ({ ...r, type: 'repartition' })),
   ].sort((a, b) => b.date.localeCompare(a.date))
 
-  // Mouvements pour la courbe, du plus ancien au plus récent (à date égale, les ajouts d'abord) :
-  // montant positif pour un ajout au solde, négatif pour une répartition
-  const mouvements = [
-    ...ajoutsSolde.map((a) => ({ id: a.id, date: a.date, montant: a.montant, ordre: 0 })),
-    ...repartitions.map((r) => ({ id: r.id, date: r.date, montant: -r.montant, ordre: 1 })),
-  ].sort((a, b) => a.date.localeCompare(b.date) || a.ordre - b.ordre)
-
   return (
     <div className="carte carte-solde">
       <div className="haut-solde">
@@ -242,7 +180,6 @@ function SoldeGeneral({ donnees, modifier }) {
           <span className="periode">Solde à répartir</span>
           <strong>{formatEuros(solde)}</strong>
         </div>
-        {mouvements.length > 0 && <CourbeSolde mouvements={mouvements} />}
         <div className="boutons-solde">
           <button type="button" className="btn btn-secondaire" onClick={() => setOuvert(ouvert === 'ajout' ? null : 'ajout')}>
             + Ajouter
