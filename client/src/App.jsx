@@ -50,7 +50,6 @@ function App() {
             {ongletActif === 'projets' && <Projets />}
             {ongletActif === 'salaire' && <Salaire />}
             {ongletActif === 'contact' && <Contact />}
-            {ongletActif === 'Fin' && <Fin />}
           </div>
         </main>
 
