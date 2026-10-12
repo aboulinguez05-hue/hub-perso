@@ -250,6 +250,9 @@
   max-width: 900px;
   margin: 0 auto;
   padding: 48px 24px;
+  /* Colonne flexible : une page peut occuper toute la hauteur disponible (ex. Contact) */
+  display: flex;
+  flex-direction: column;
 }
 
 /* Fondu rapide à chaque changement d'onglet */
@@ -263,6 +266,9 @@
 }
 
 .apparition {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   animation: fondu 0.3s ease-out;
 }
 
@@ -462,34 +468,34 @@
   }
 }
 
-/* ---------- Contact : coordonnées, réseaux cliquables et formulaire ---------- */
+/* ---------- Contact : réseaux cliquables et coordonnées ---------- */
 
-/* E-mail et téléphone : texte simple centré, non cliquable */
+/* La page remplit toute la hauteur et répartit ses 3 parties avec des espaces égaux */
+.page-contact {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+/* E-mail et téléphone : texte simple centré, non cliquable, un peu plus grand */
 .coordonnees {
   list-style: none;
-  margin: 0 0 40px;
+  margin: 0;
   padding: 0;
   text-align: center;
+  font-size: 1.1rem;
+  line-height: 1.9;
 }
 
 .grille-contacts {
   list-style: none;
-  max-width: 560px;
+  max-width: 640px;
   margin: 0 auto;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-  gap: 12px;
-}
-
-/* Flèche ↗ : indique un lien externe, devient violette au survol */
-.fleche {
-  color: var(--texte-doux);
-  transition: color 0.2s;
-}
-
-.carte-contact:hover .fleche {
-  color: var(--accent);
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
 }
 
 .grille-contacts li {
@@ -498,63 +504,42 @@
   animation-delay: calc(var(--rang) * 60ms);
 }
 
-/* Toute la carte est le lien ; ombre légère au survol, comme les passions */
+/* Toute la carte est le lien : fond violet du site, texte blanc ;
+   au survol le violet fonce et une ombre légère apparaît */
 .carte-contact {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 14px 16px;
-  border: 1px solid var(--bordure);
-  border-radius: 12px;
-  background: var(--fond-carte);
-  color: var(--texte);
+  gap: 6px;
+  padding: 20px 22px;
+  border-radius: 14px;
+  background: var(--accent);
+  color: white;
+  font-size: 1.1rem;
   text-decoration: none;
-  transition: box-shadow 0.2s;
+  transition: background 0.2s, box-shadow 0.2s;
 }
 
 .carte-contact:hover {
-  box-shadow: 0 6px 18px rgba(30, 35, 60, 0.12);
+  background: #4338ca;
+  box-shadow: 0 8px 22px rgba(79, 70, 229, 0.3);
 }
 
 .carte-contact .detail {
-  font-size: 0.88rem;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
   overflow-wrap: anywhere;
 }
 
-.formulaire-contact {
-  max-width: 560px;
-  margin: 0 auto;
-  gap: 14px;
+/* Flèche ↗ : indique un lien externe, se décale un peu au survol */
+.fleche {
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.8);
+  transition: transform 0.2s;
 }
 
-.formulaire-contact label {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-size: 0.9rem;
-  color: var(--texte-doux);
-}
-
-.formulaire-contact input,
-.formulaire-contact textarea {
-  padding: 8px 10px;
-  border: 1px solid var(--bordure);
-  border-radius: 8px;
-  background: var(--fond);
-  color: var(--texte);
-  font: inherit;
-  resize: vertical;
-}
-
-.formulaire-contact input:focus,
-.formulaire-contact textarea:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
-}
-
-.formulaire-contact .btn {
-  align-self: flex-end;
+.carte-contact:hover .fleche {
+  transform: translate(2px, -2px);
 }
 
 @media (prefers-reduced-motion: reduce) {
