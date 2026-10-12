@@ -5,6 +5,8 @@
 }
 
 .colonne-droite {
+  /* Repère pour placer la connexion Google dans le coin en haut à droite */
+  position: relative;
   flex: 1;
   min-width: 0;
   display: flex;
@@ -681,13 +683,19 @@
   border-top: 1px solid var(--bordure);
 }
 
-/* ---------- Connexion Google discrète, en haut à gauche (Projets et Gestion de salaire) ---------- */
+/* ---------- Connexion Google discrète, en haut à droite (Projets et Gestion de salaire) ---------- */
+/* Placée par rapport à la colonne de droite (et non au contenu centré) : toujours dans le coin de la page */
 .compte-discret {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  z-index: 5;
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-end;
   align-items: center;
   gap: 6px;
-  margin-bottom: 4px;
+  max-width: 60%;
   font-size: 0.8rem;
   color: var(--texte-doux);
 }
