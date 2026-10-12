@@ -18,6 +18,10 @@ const PASSIONS = [
     titre: 'Voitures',
     texte: 'Passionné d’automobile : le design, les performances et les nouveautés.',
   },
+   {
+    titre: 'Voitures',
+    texte: 'Passionné d’automobile : le design, les performances et les nouveautés.',
+  }
 ]
 
 function Accueil() {
