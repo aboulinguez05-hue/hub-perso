@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import photo from '../assets/photo.jpg'
 
-// Menu vertical à gauche : reçoit les onglets et l'onglet actif en "props" depuis App
-function Header({ onglets, ongletActif, onChange }) {
+// Menu à gauche : un seul panneau de verre, divisé en deux parties titrées
+// (« Informations » et « Fonctionnalités »). Reçoit les groupes d'onglets et l'onglet actif depuis App.
+function Header({ groupes, ongletActif, onChange }) {
   // Vrai dès que la page a défilé : le verre du menu devient plus marqué
   const [defile, setDefile] = useState(false)
 
@@ -19,24 +20,30 @@ function Header({ onglets, ongletActif, onChange }) {
   }, [])
 
   return (
-    <aside className={defile ? 'sidebar verre defile' : 'sidebar verre'}>
+    <aside className={defile ? 'sidebar panneau verre defile' : 'sidebar panneau verre'}>
       <div className="profil">
         <img src={photo} alt="" className="avatar" />
         <span className="logo">Antoine B.</span>
       </div>
 
-      <nav className="nav">
-        {onglets.map((onglet) => (
-          <button
-            key={onglet.id}
-            type="button"
-            className={onglet.id === ongletActif ? 'onglet actif' : 'onglet'}
-            onClick={() => onChange(onglet.id)}
-          >
-            {onglet.label}
-          </button>
-        ))}
-      </nav>
+      {groupes.map((groupe) => (
+        <section key={groupe.titre} className="groupe" aria-label={groupe.titre}>
+          <span className="titre-groupe">{groupe.titre}</span>
+
+          <nav className="nav">
+            {groupe.onglets.map((onglet) => (
+              <button
+                key={onglet.id}
+                type="button"
+                className={onglet.id === ongletActif ? 'onglet actif' : 'onglet'}
+                onClick={() => onChange(onglet.id)}
+              >
+                {onglet.label}
+              </button>
+            ))}
+          </nav>
+        </section>
+      ))}
     </aside>
   )
 }

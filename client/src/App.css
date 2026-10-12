@@ -11,20 +11,42 @@
   flex-direction: column;
 }
 
-/* ---------- Menu vertical : panneau flottant ---------- */
+/* ---------- Menu vertical : un panneau flottant en deux parties ---------- */
 .sidebar {
   position: sticky;
   top: 12px;
   z-index: 10;
-  height: calc(100vh - 24px);
-  width: 108px;
+  align-self: flex-start;
+  width: 116px;
   margin: 12px 0 12px 12px;
   flex-shrink: 0;
+}
+
+/* Le panneau de verre qui contient la photo et les deux parties */
+.panneau {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  padding: 24px 8px;
-  border-radius: 24px;
+  gap: 22px;
+  padding: 18px 8px;
+  border-radius: 22px;
+}
+
+/* Une partie du menu : son titre puis ses onglets */
+.groupe {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Titre de la partie (Informations, Fonctionnalités) */
+.titre-groupe {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--texte-doux);
 }
 
 /* ---------- Effet « liquid glass » ----------
@@ -177,15 +199,22 @@
     flex-direction: column;
   }
 
-  /* Barre collée en haut : le contenu défile dessous, à travers le verre */
+  /* Le panneau passe en haut de la page, sur toute la largeur */
   .sidebar {
-    top: 8px;
-    height: auto;
+    position: static;
+    align-self: stretch;
     width: auto;
     margin: 8px 8px 0;
-    gap: 16px;
+  }
+
+  .panneau {
+    gap: 12px;
     padding: 14px 16px;
     border-radius: 20px;
+  }
+
+  .titre-groupe {
+    text-align: left;
   }
 
   .profil {
