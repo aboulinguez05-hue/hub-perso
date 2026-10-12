@@ -681,21 +681,58 @@
   border-top: 1px solid var(--bordure);
 }
 
-/* ---------- Bandeau de connexion Google (Projets et Gestion de salaire) ---------- */
-.bandeau-compte {
-  flex-direction: row;
+/* ---------- Connexion Google discrète, en haut à gauche (Projets et Gestion de salaire) ---------- */
+.compte-discret {
+  display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
-  gap: 8px 16px;
-  margin: 0 auto 20px;
-  max-width: 640px;
-  font-size: 0.9rem;
-  text-align: center;
+  gap: 6px;
+  margin-bottom: 4px;
+  font-size: 0.8rem;
+  color: var(--texte-doux);
 }
 
-.bandeau-compte .lien-bouton,
-.bandeau-compte .message-erreur {
+/* Petit bouton blanc arrondi avec le logo Google */
+.btn-google {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--bordure);
+  border-radius: 999px;
+  background: var(--fond-carte);
+  color: var(--texte-doux);
+  font: inherit;
+  cursor: pointer;
+  transition: box-shadow 0.2s, color 0.2s;
+}
+
+.btn-google:hover {
+  color: var(--texte);
+  box-shadow: 0 2px 8px rgba(30, 35, 60, 0.12);
+}
+
+.photo-compte {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.lien-discret {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--texte-doux);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.lien-discret:hover {
+  color: #dc2626;
+}
+
+.compte-discret .message-erreur {
   margin: 0;
 }
 

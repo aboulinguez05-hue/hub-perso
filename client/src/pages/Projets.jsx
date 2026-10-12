@@ -221,12 +221,13 @@ function Projets() {
 
   return (
     <section>
+      {/* Connexion Google discrète, en haut à gauche */}
+      <BandeauCompte />
+
       <h2 className="titre-centre">Projets</h2>
       <p className="intro-centree">
         Suis tes projets d’épargne. Personne d’autre que toi ne peut voir tes données.
       </p>
-
-      <BandeauCompte />
 
       {erreurStockage && (
         <p className="message-erreur">
