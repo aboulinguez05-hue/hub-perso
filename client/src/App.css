@@ -744,6 +744,107 @@
   margin: 0;
 }
 
+/* ---------- Solde général à répartir (en haut de Projets) ---------- */
+.carte-solde {
+  gap: 12px;
+  max-width: 640px;
+  margin: 0 auto 20px;
+  transition: box-shadow 0.2s;
+}
+
+.carte-solde:hover {
+  box-shadow: 0 6px 18px rgba(30, 35, 60, 0.12);
+}
+
+/* Montant à gauche, boutons à droite */
+.haut-solde {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.montant-solde {
+  display: flex;
+  flex-direction: column;
+}
+
+.montant-solde strong {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 1.6rem;
+  line-height: 1.2;
+}
+
+.boutons-solde {
+  display: flex;
+  gap: 8px;
+}
+
+/* Bouton désactivé (ex. « Répartir » quand le solde est vide) */
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.formulaire-solde,
+.formulaire-repartition {
+  padding-top: 12px;
+  border-top: 1px solid var(--bordure);
+  animation: fondu 0.3s ease-out;
+}
+
+.formulaire-repartition {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.entete-repartition {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Une ligne par projet : nom, montant, « Tout le reste » */
+.ligne-repartition {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ligne-repartition label {
+  flex: 1;
+}
+
+.formulaire-repartition .lien-bouton {
+  margin: 0;
+}
+
+.formulaire-repartition .lien-bouton:disabled {
+  color: var(--texte-doux);
+  cursor: not-allowed;
+}
+
+.lien-historique {
+  align-self: flex-start;
+  margin: 0;
+}
+
+/* Montant sorti du solde vers les projets */
+.montant-reparti {
+  font-weight: 700;
+  color: var(--texte-doux);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .formulaire-solde,
+  .formulaire-repartition {
+    animation: none;
+  }
+}
+
 /* ---------- Carte d'un projet d'épargne ---------- */
 /* Ombre légère au survol et apparition en cascade, comme les autres cartes du site */
 .carte-projet {

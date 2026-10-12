@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import BandeauCompte from '../components/BandeauCompte.jsx'
+import SoldeGeneral from '../components/SoldeGeneral.jsx'
 import {
-  aujourdhui,
   ecrireDonneesProjets,
   formatDate,
   formatEuros,
@@ -168,18 +168,10 @@ function Projets() {
   // null = aucun formulaire ouvert, 'nouveau' = création, sinon l'id du projet modifié
   const [edition, setEdition] = useState(null)
 
-  // Champs du formulaire « Ajouter de l'argent »
-  const [projetId, setProjetId] = useState('')
-  const [montant, setMontant] = useState('')
-  const [date, setDate] = useState(aujourdhui)
-  const [note, setNote] = useState('')
-
-  // Chaque changement met à jour l'affichage et enregistre (navigateur ou compte)
-  const setProjets = (nouveaux) => modifier({ projets: nouveaux, versements })
-  const setVersements = (nouveaux) => modifier({ projets, versements: nouveaux })
-
-  // Projet sélectionné dans le formulaire d'ajout (le premier par défaut)
-  const projetChoisi = projets.some((p) => p.id === projetId) ? projetId : projets[0]?.id
+  // Chaque changement met à jour l'affichage et enregistre (navigateur ou compte) ;
+  // ...donnees garde le reste (dont le solde général) intact
+  const setProjets = (nouveaux) => modifier({ ...donnees, projets: nouveaux })
+  const setVersements = (nouveaux) => modifier({ ...donnees, versements: nouveaux })
 
   function enregistrerProjet(donnees) {
     if (edition === 'nouveau') {
@@ -193,27 +185,20 @@ function Projets() {
   function supprimerProjet(projet) {
     if (!confirm(`Supprimer le projet « ${projet.nom} » et tous ses ajouts ?`)) return
     // Un seul enregistrement pour le projet et ses ajouts
+    // (l'argent venu du solde général y retourne automatiquement)
     modifier({
+      ...donnees,
       projets: projets.filter((p) => p.id !== projet.id),
       versements: versements.filter((v) => v.projetId !== projet.id),
     })
   }
 
-  function ajouterVersement(event) {
-    event.preventDefault() // empêche le rechargement de la page à l'envoi du formulaire
-
-    const valeur = Number(montant)
-    if (!valeur || valeur <= 0) return
-
-    const nouveau = { id: crypto.randomUUID(), projetId: projetChoisi, montant: valeur, date, note: note.trim() }
-    setVersements([...versements, nouveau])
-
-    setMontant('')
-    setNote('')
-  }
-
   function supprimerVersement(id) {
-    if (!confirm('Supprimer cet ajout ?')) return
+    const versement = versements.find((v) => v.id === id)
+    const question = versement?.repartition
+      ? 'Supprimer cet ajout ? Son montant revient dans le solde à répartir.'
+      : 'Supprimer cet ajout ?'
+    if (!confirm(question)) return
     setVersements(versements.filter((v) => v.id !== id))
   }
 
@@ -236,6 +221,9 @@ function Projets() {
             : 'Impossible d’enregistrer : le stockage du navigateur est plein ou bloqué. Essaie une image plus légère ou supprime un projet.'}
         </p>
       )}
+
+      {/* Solde général : argent ajouté puis réparti entre les projets */}
+      {donnees !== null && <SoldeGeneral donnees={donnees} modifier={modifier} />}
 
       {/* Données du compte pas encore reçues */}
       {donnees === null ? (
@@ -276,47 +264,6 @@ function Projets() {
               />
             ))}
           </div>
-
-          <h3 className="titre-centre">Ajouter de l'argent</h3>
-          <form className="carte formulaire" onSubmit={ajouterVersement}>
-            <label>
-              Projet
-              <select value={projetChoisi} onChange={(e) => setProjetId(e.target.value)}>
-                {projets.map((p) => (
-                  <option key={p.id} value={p.id}>{p.nom}</option>
-                ))}
-              </select>
-            </label>
-
-            <label>
-              Montant (€)
-              <input
-                type="number"
-                min="0.01"
-                step="0.01"
-                required
-                value={montant}
-                onChange={(e) => setMontant(e.target.value)}
-              />
-            </label>
-
-            <label>
-              Date
-              <input type="date" required value={date} onChange={(e) => setDate(e.target.value)} />
-            </label>
-
-            <label className="champ-large">
-              Note (facultatif)
-              <input
-                type="text"
-                placeholder="ex : salaire d'octobre"
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
-              />
-            </label>
-
-            <button type="submit" className="btn">Ajouter</button>
-          </form>
         </>
       )}
     </section>
