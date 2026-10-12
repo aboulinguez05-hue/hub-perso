@@ -605,9 +605,22 @@
   border-top: 1px solid var(--bordure);
 }
 
-/* ---------- Carte d'un projet d'épargne : image à gauche, texte à droite ---------- */
+/* ---------- Carte d'un projet d'épargne ---------- */
+/* Ombre légère au survol et apparition en cascade, comme les autres cartes du site */
 .carte-projet {
-  flex-direction: row;
+  gap: 10px;
+  transition: box-shadow 0.2s;
+  animation: fondu 0.3s ease-out both;
+  animation-delay: calc(var(--rang) * 60ms);
+}
+
+.carte-projet:hover {
+  box-shadow: 0 6px 18px rgba(30, 35, 60, 0.12);
+}
+
+/* Haut de la carte : image à gauche, texte à droite */
+.haut-projet {
+  display: flex;
   align-items: center;
   gap: 16px;
 }
@@ -620,11 +633,100 @@
   border-radius: 8px;
 }
 
+/* Ancien projet sans image : cadre en pointillés qui invite à en ajouter une */
+.image-manquante {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: 2px dashed var(--bordure);
+  color: var(--texte-doux);
+  font-size: 0.75rem;
+  text-align: center;
+}
+
 .infos-projet {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+
+/* Boutons sous la carte : « Voir les ajouts » à gauche, Modifier / Supprimer à droite */
+.actions-projet {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.actions-projet .lien-bouton {
+  margin: 0;
+}
+
+.actions-projet .espace {
+  flex: 1;
+}
+
+.actions-projet .lien-danger {
+  color: var(--texte-doux);
+}
+
+.actions-projet .lien-danger:hover {
+  color: #dc2626;
+}
+
+/* Aucun projet : message centré et bouton de création */
+.projets-vide {
+  align-items: center;
+  gap: 12px;
+  padding: 32px 16px;
+  text-align: center;
+}
+
+.btn-nouveau-projet {
+  display: block;
+  margin: 0 auto 20px;
+}
+
+/* Formulaire de création / modification d'un projet */
+.formulaire-projet {
+  margin-bottom: 20px;
+}
+
+/* Élément qui prend toute la largeur du formulaire */
+.formulaire .champ-plein {
+  flex-basis: 100%;
+}
+
+.choix-image {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.apercu-image {
+  width: 80px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.boutons-formulaire {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.message-erreur {
+  margin: 0 0 12px;
+  color: #dc2626;
+  font-size: 0.9rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carte-projet {
+    animation: none;
+  }
 }
 
 /* ---------- Formulaire d'ajout d'argent ---------- */
@@ -664,21 +766,24 @@
   outline-offset: 1px;
 }
 
-/* ---------- Historique des ajouts ---------- */
+/* ---------- Historique des ajouts (dans la carte du projet) ---------- */
 .historique {
   list-style: none;
+  margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
 }
 
+/* Lignes fines séparées par un trait */
 .ligne-historique {
-  flex-direction: row;
+  display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 12px;
-  padding: 10px 16px;
+  padding: 6px 0;
+  border-top: 1px solid var(--bordure);
+  font-size: 0.9rem;
 }
 
 .ligne-historique .note {

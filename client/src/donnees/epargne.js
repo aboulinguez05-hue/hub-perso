@@ -1,30 +1,76 @@
-import audiTT from '../assets/audi-tt.webp'
+// Données de l'onglet Projets. Tout est enregistré dans le navigateur du visiteur (localStorage) :
+// chacun a ses propres projets, et personne d'autre ne peut les voir.
 
-// Données partagées entre l'onglet Projets (formulaire) et l'onglet Économie (graphique)
+// Clés sous lesquelles les données sont enregistrées dans le navigateur
+const CLE_PROJETS = 'hub-perso-projets'
+const CLE_VERSEMENTS = 'hub-perso-versements'
 
-// Projets d'épargne : "investi" = montant déjà mis de côté avant le suivi
-export const PROJETS = [
-  { nom: 'AUDI TT 2', investi: 0, prevu: 10000, image: audiTT },
-]
-
-// Clé sous laquelle les ajouts sont enregistrés dans le navigateur
-const CLE_STOCKAGE = 'hub-perso-versements'
-
-// Lit les ajouts enregistrés (tableau vide si rien, ou si le stockage est indisponible)
-export function chargerVersements() {
+function lire(cle) {
   try {
-    return JSON.parse(localStorage.getItem(CLE_STOCKAGE)) ?? []
+    return JSON.parse(localStorage.getItem(cle))
   } catch {
-    return []
+    return null
   }
 }
 
-export function sauvegarderVersements(versements) {
+// Renvoie false si l'enregistrement a échoué (stockage plein ou indisponible)
+function ecrire(cle, valeur) {
   try {
-    localStorage.setItem(CLE_STOCKAGE, JSON.stringify(versements))
+    localStorage.setItem(cle, JSON.stringify(valeur))
+    return true
   } catch {
-    // stockage indisponible (navigation privée…) : on garde juste les données en mémoire
+    return false
   }
+}
+
+// Projets : { id, nom, objectif, image } (image = image réduite, enregistrée en texte "data:...")
+export function chargerProjets() {
+  const projets = lire(CLE_PROJETS)
+  if (projets) return projets
+
+  // Ancienne version : le projet « AUDI TT 2 » était écrit dans le code et les ajouts
+  // ne gardaient que son nom. S'il a déjà des ajouts dans ce navigateur, on le recrée ici.
+  const anciens = lire(CLE_VERSEMENTS) ?? []
+  if (anciens.some((v) => v.projet === 'AUDI TT 2')) {
+    return [{ id: 'audi-tt-2', nom: 'AUDI TT 2', objectif: 10000, image: '' }]
+  }
+  return []
+}
+
+export const sauvegarderProjets = (projets) => ecrire(CLE_PROJETS, projets)
+
+// Ajouts d'argent : { id, projetId, montant, date, note }
+export function chargerVersements() {
+  const versements = lire(CLE_VERSEMENTS) ?? []
+  // Ancienne version : l'ajout gardait le nom du projet au lieu de son identifiant
+  return versements.map((v) =>
+    v.projetId ? v : { ...v, projetId: v.projet === 'AUDI TT 2' ? 'audi-tt-2' : v.projet },
+  )
+}
+
+export const sauvegarderVersements = (versements) => ecrire(CLE_VERSEMENTS, versements)
+
+// Réduit une image choisie par le visiteur (400 px de large maximum) et la renvoie en texte "data:..."
+// pour qu'elle tienne dans le stockage du navigateur
+export function reduireImage(fichier) {
+  return new Promise((resolve, reject) => {
+    const image = new Image()
+    const url = URL.createObjectURL(fichier)
+    image.onload = () => {
+      const echelle = Math.min(1, 400 / image.width)
+      const canvas = document.createElement('canvas')
+      canvas.width = Math.round(image.width * echelle)
+      canvas.height = Math.round(image.height * echelle)
+      canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height)
+      URL.revokeObjectURL(url)
+      resolve(canvas.toDataURL('image/jpeg', 0.8))
+    }
+    image.onerror = () => {
+      URL.revokeObjectURL(url)
+      reject(new Error('Image illisible'))
+    }
+    image.src = url
+  })
 }
 
 export const aujourdhui = () => new Date().toISOString().slice(0, 10)
