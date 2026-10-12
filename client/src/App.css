@@ -885,9 +885,25 @@
 }
 
 /* ---------- Gestion de salaire ---------- */
+/* Carte du mois centrée ; fondu à chaque changement de mois et ombre légère au survol,
+   comme les autres cartes du site */
 .budget {
   gap: 4px;
   max-width: 560px;
+  margin: 0 auto;
+  transition: box-shadow 0.2s;
+  animation: fondu 0.3s ease-out;
+}
+
+.budget:hover,
+.tableau-conteneur:hover {
+  box-shadow: 0 6px 18px rgba(30, 35, 60, 0.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .budget {
+    animation: none;
+  }
 }
 
 .budget h3 {
@@ -981,7 +997,13 @@
   justify-content: space-between;
   gap: 12px;
   max-width: 560px;
-  margin-bottom: 8px;
+  margin: 0 auto 8px;
+}
+
+/* Lien « Revenir au mois en cours », centré sous la navigation */
+.retour-mois {
+  display: block;
+  margin: 0 auto 12px;
 }
 
 .nav-mois .btn {
@@ -1016,9 +1038,12 @@
   color: #dc2626;
 }
 
+/* Mois sans budget : message centré et bouton de création, comme Projets */
 .budget-vide {
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
+  padding: 32px 16px;
+  text-align: center;
 }
 
 .budget-vide p {
@@ -1029,6 +1054,7 @@
 .tableau-conteneur {
   overflow-x: auto;
   padding: 0;
+  transition: box-shadow 0.2s;
 }
 
 .tableau {

@@ -1,14 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { formatEuros } from '../donnees/epargne.js'
 
-// Clé sous laquelle les budgets sont enregistrés dans le navigateur
+// Clé sous laquelle les budgets sont enregistrés dans le navigateur du visiteur (localStorage) :
+// chacun a ses propres budgets, et personne d'autre ne peut les voir.
 const CLE_STOCKAGE = 'hub-perso-salaire'
 
-// Dépenses de départ (montants à remplir). "diviseur: 2" = on ne compte que la moitié
+// Dépenses proposées pour un premier budget (montants à remplir, lignes modifiables).
+// Une dépense peut avoir "diviseur: 2" pour n'en compter que la moitié (anciens budgets).
 const DEPENSES_PAR_DEFAUT = [
-  { id: 'essence', nom: 'Essence', montant: '' },
-  { id: 'assurance', nom: 'Assurance voiture', montant: '', diviseur: 2 },
-  { id: 'autoroute', nom: 'Autoroute', montant: '' },
+  { id: 'logement', nom: 'Logement', montant: '' },
+  { id: 'courses', nom: 'Courses', montant: '' },
+  { id: 'transport', nom: 'Transport', montant: '' },
   { id: 'telephone', nom: 'Téléphone', montant: '' },
   { id: 'epargne', nom: 'De côté', montant: '' },
 ]
@@ -54,18 +56,22 @@ function chargerBudgets() {
 }
 
 function Salaire() {
-  const [budgets, setBudgets] = useState(chargerBudgets)
+  const [budgets, setBudgetsEtat] = useState(chargerBudgets)
   const [moisAffiche, setMoisAffiche] = useState(moisActuel)
   const [nouvelleDepense, setNouvelleDepense] = useState('')
+  const [erreurStockage, setErreurStockage] = useState(false)
 
-  // À chaque modification, on enregistre dans le navigateur
-  useEffect(() => {
+  // À chaque modification, on met à jour l'affichage et on enregistre dans le navigateur
+  // (avec un message si l'enregistrement échoue, par exemple stockage plein ou bloqué)
+  function setBudgets(nouveaux) {
+    setBudgetsEtat(nouveaux)
     try {
-      localStorage.setItem(CLE_STOCKAGE, JSON.stringify(budgets))
+      localStorage.setItem(CLE_STOCKAGE, JSON.stringify(nouveaux))
+      setErreurStockage(false)
     } catch {
-      // stockage indisponible : les données restent juste en mémoire
+      setErreurStockage(true)
     }
-  }, [budgets])
+  }
 
   // Tous les mois remplis, du plus récent au plus ancien
   const moisRemplis = Object.keys(budgets).sort().reverse()
@@ -119,8 +125,17 @@ function Salaire() {
 
   return (
     <section>
-      <h2>Gestion de salaire</h2>
-      <p>Mon salaire du mois et tout ce que je dois payer ou mettre de côté.</p>
+      <h2 className="titre-centre">Gestion de salaire</h2>
+      <p className="intro-centree">
+        Suis ton salaire et tes dépenses mois par mois. Tes données restent uniquement dans ton
+        navigateur : personne d’autre ne peut les voir.
+      </p>
+
+      {erreurStockage && (
+        <p className="message-erreur intro-centree">
+          Impossible d’enregistrer : le stockage du navigateur est plein ou bloqué.
+        </p>
+      )}
 
       {/* Navigation entre les mois */}
       <div className="nav-mois">
@@ -133,13 +148,14 @@ function Salaire() {
         </button>
       </div>
       {moisAffiche !== moisActuel() && (
-        <button type="button" className="lien-bouton" onClick={() => setMoisAffiche(moisActuel())}>
+        <button type="button" className="lien-bouton retour-mois" onClick={() => setMoisAffiche(moisActuel())}>
           Revenir au mois en cours
         </button>
       )}
 
+      {/* key={moisAffiche} : la carte est recréée à chaque changement de mois, ce qui relance le fondu */}
       {!budget ? (
-        <div className="carte budget budget-vide">
+        <div key={moisAffiche} className="carte budget budget-vide">
           <p>Pas encore de budget pour {nomDuMois(moisAffiche).toLowerCase()}.</p>
           <button type="button" className="btn" onClick={creerMois}>
             {moisPrecedent
@@ -148,7 +164,7 @@ function Salaire() {
           </button>
         </div>
       ) : (
-        <div className="carte budget">
+        <div key={moisAffiche} className="carte budget">
           <label className="ligne-budget ligne-salaire">
             <span>Salaire net</span>
             <span className="champ-euros">
@@ -200,7 +216,7 @@ function Salaire() {
           <form className="ajout-depense" onSubmit={ajouterDepense}>
             <input
               type="text"
-              placeholder="Autre dépense (ex : loyer)"
+              placeholder="Autre dépense (ex : abonnement)"
               value={nouvelleDepense}
               onChange={(e) => setNouvelleDepense(e.target.value)}
             />
@@ -249,7 +265,7 @@ function Salaire() {
       {/* Vue d'ensemble de tous les mois */}
       {moisRemplis.length > 0 && (
         <>
-          <h3>Tous mes mois</h3>
+          <h3 className="titre-centre">Tous tes mois</h3>
           <div className="carte tableau-conteneur">
             <table className="tableau">
               <thead>
@@ -284,7 +300,7 @@ function Salaire() {
               </tbody>
             </table>
           </div>
-          <p className="periode">Clique sur un mois pour l'afficher.</p>
+          <p className="periode intro-centree">Clique sur un mois pour l'afficher.</p>
         </>
       )}
     </section>
