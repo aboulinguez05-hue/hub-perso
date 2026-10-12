@@ -1,5 +1,3 @@
-import photo from '../assets/photo.jpg'
-
 // Mes passions, affichées en cartes sous « Qui suis-je »
 const PASSIONS = [
   {
@@ -23,15 +21,6 @@ const PASSIONS = [
 function Accueil() {
   return (
     <>
-      <section className="hero">
-        <img src={photo} alt="Photo d'Antoine Boulinguez" className="photo" />
-
-        <div>
-          <h1>Bonjour, je suis Antoine Boulinguez</h1>
-          <p className="sous-titre">Développeur en devenir — bienvenue sur mon hub personnel.</p>
-        </div>
-      </section>
-
       <section className="section-accueil">
         <h2 className="titre-centre">Qui suis-je ?</h2>
         <p className="intro-centree">
