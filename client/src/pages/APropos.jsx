@@ -51,16 +51,23 @@ const SCOLARITE = [
 
 const COMPETENCES = ['C#', '.NET', 'React', 'JavaScript', 'HTML', 'CSS', 'SQL', 'Git']
 
-// Une liste d'étapes affichées en cartes : période, titre, lieu et détail éventuel
+// Une frise verticale : un point violet par étape, relié par un trait,
+// avec à côté un petit bloc blanc (période — titre, lieu, détail éventuel)
 function Etapes({ etapes }) {
   return (
-    <ul className="timeline">
-      {etapes.map((etape) => (
-        <li key={etape.periode + etape.titre} className="carte">
-          <span className="periode">{etape.periode}</span>
-          <strong>{etape.titre}</strong>
-          <span>{etape.lieu}</span>
-          {etape.detail && <span className="detail">{etape.detail}</span>}
+    <ul className="frise">
+      {etapes.map((etape, index) => (
+        // --rang sert à décaler l'apparition de chaque étape (effet cascade)
+        <li key={etape.periode + etape.titre} className="etape" style={{ '--rang': index }}>
+          <div className="bloc-etape">
+            <span className="ligne-etape">
+              <span className="periode">{etape.periode}</span>
+              <span className="tiret">—</span>
+              <strong>{etape.titre}</strong>
+            </span>
+            <span className="lieu">{etape.lieu}</span>
+            {etape.detail && <span className="detail">{etape.detail}</span>}
+          </div>
         </li>
       ))}
     </ul>

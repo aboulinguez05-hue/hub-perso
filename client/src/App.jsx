@@ -31,19 +31,27 @@ function App() {
   // L'onglet actif est stocké dans un "state" : quand il change, React réaffiche la page
   const [ongletActif, setOngletActif] = useState('accueil')
 
+  // Change d'onglet et remonte en haut pour afficher la nouvelle page depuis le début
+  const changerOnglet = (id) => {
+    setOngletActif(id)
+    window.scrollTo({ top: 0 })
+  }
+
   return (
     <div className="layout">
-      <Header groupes={GROUPES} ongletActif={ongletActif} onChange={setOngletActif} />
+      <Header groupes={GROUPES} ongletActif={ongletActif} onChange={changerOnglet} />
 
       <div className="colonne-droite">
         <main className="contenu">
-          {ongletActif === 'accueil' && <Accueil onChange={setOngletActif} />}
-          {ongletActif === 'apropos' && <APropos />}
-          {ongletActif === 'projets' && <Projets />}
-          {ongletActif === 'salaire' && <Salaire />}
-          {ongletActif === 'contact' && <Contact />}
-          {ongletActif === 'Fin' && <Fin />}
-
+          {/* La clé change avec l'onglet : React recrée ce bloc, ce qui relance l'effet de fondu */}
+          <div key={ongletActif} className="apparition">
+            {ongletActif === 'accueil' && <Accueil onChange={changerOnglet} />}
+            {ongletActif === 'apropos' && <APropos />}
+            {ongletActif === 'projets' && <Projets />}
+            {ongletActif === 'salaire' && <Salaire />}
+            {ongletActif === 'contact' && <Contact />}
+            {ongletActif === 'Fin' && <Fin />}
+          </div>
         </main>
 
         <footer className="footer">© {new Date().getFullYear()} Antoine Boulinguez</footer>

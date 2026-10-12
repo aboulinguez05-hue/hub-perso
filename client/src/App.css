@@ -252,6 +252,27 @@
   padding: 48px 24px;
 }
 
+/* Fondu rapide à chaque changement d'onglet */
+@keyframes fondu {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.apparition {
+  animation: fondu 0.3s ease-out;
+}
+
+/* Si l'utilisateur a demandé à réduire les animations dans son système, on les coupe */
+@media (prefers-reduced-motion: reduce) {
+  .apparition {
+    animation: none;
+  }
+}
+
 .hero {
   display: flex;
   flex-wrap: wrap;
@@ -305,7 +326,6 @@
   background: var(--fond-carte);
 }
 
-.timeline,
 .liens {
   list-style: none;
   padding: 0;
@@ -323,6 +343,100 @@
   font-size: 0.95rem;
   color: var(--texte-doux);
   line-height: 1.5;
+}
+
+/* ---------- Frise de la page « Mon parcours » ---------- */
+.frise {
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Chaque étape laisse de la place à gauche pour le point et le trait */
+.etape {
+  position: relative;
+  padding-left: 26px;
+  /* Les étapes apparaissent l'une après l'autre : 60 ms d'écart entre chacune */
+  animation: fondu 0.3s ease-out both;
+  animation-delay: calc(var(--rang) * 60ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .etape {
+    animation: none;
+  }
+}
+
+/* Le point violet, centré sur la première ligne du bloc */
+.etape::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 13px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--fond);
+  z-index: 1;
+}
+
+/* Le trait gris qui relie ce point au point suivant (pas après la dernière étape) */
+.etape:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 18px;
+  bottom: -26px;
+  width: 2px;
+  background: #c9cdd4;
+}
+
+/* Petit bloc blanc compact ; une ombre légère apparaît au survol */
+.bloc-etape {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 12px;
+  border: 1px solid var(--bordure);
+  border-radius: 10px;
+  background: var(--fond-carte);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  transition: box-shadow 0.2s;
+}
+
+.bloc-etape:hover {
+  box-shadow: 0 6px 18px rgba(30, 35, 60, 0.12);
+}
+
+/* Première ligne : période — titre */
+.ligne-etape {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 6px;
+}
+
+.ligne-etape .periode {
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.tiret {
+  color: var(--texte-doux);
+}
+
+.lieu {
+  font-size: 0.8rem;
+  color: var(--texte-doux);
+}
+
+.bloc-etape .detail {
+  font-size: 0.82rem;
 }
 
 .tags {
