@@ -355,6 +355,7 @@
   font: inherit;
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s;
+ 
 }
 
 .btn:hover {
@@ -370,6 +371,7 @@
 
 .btn-secondaire:hover {
   background: rgba(129, 140, 248, 0.12);
+  
 }
 
 /* ---------- Cartes, listes ---------- */
@@ -785,6 +787,7 @@
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  
 }
 
 .formulaire-solde,
@@ -922,6 +925,7 @@
 .projets-vide,
 .btn-nouveau-projet {
   animation: fondu 0.3s ease-out;
+  
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -978,6 +982,7 @@
 .btn-image:focus-within {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+  
 }
 
 /* Le champ fichier natif est caché mais reste utilisable (clic sur le bouton, clavier) */
@@ -987,6 +992,7 @@
   height: 1px;
   opacity: 0;
   pointer-events: none;
+  
 }
 
 .apercu-image {
@@ -999,7 +1005,10 @@
 .boutons-formulaire {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  gap :10px;
+  margin-top: 15px;
+  
+ 
 }
 
 .message-erreur {
