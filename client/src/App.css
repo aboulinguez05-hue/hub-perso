@@ -889,6 +889,7 @@
 
 .actions-projet .lien-bouton.lien-danger {
   border-color: red;
+  background: red;
 }
 
 .actions-projet .espace {
@@ -1243,8 +1244,12 @@
   transition: background 0.2s, border-color 0.2s;
   font-size: 10px;
   border-radius: 5px;
+  background: var(--violet-clair);
   ;
  
+}
+.lien-bouton:hover {
+  transform: translateY(-5px);
 }
 
 
